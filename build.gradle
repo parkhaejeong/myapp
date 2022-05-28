@@ -29,6 +29,11 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    // MyBatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+    runtimeOnly 'org.springframework.boot:spring-boot-starter-jdbc'
+    // thymeleaf
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 }
 
 tasks.named('test') {

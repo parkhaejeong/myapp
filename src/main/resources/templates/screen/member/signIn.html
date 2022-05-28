@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragment/layout}">
+
+<div layout:fragment="custom-content">
+    <div>
+        <form name="signForm" method="post" th:action="@{/signInProc}">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <label for="UserId">ID</label>
+                        <input id="UserId" name="UserId" type="text"  required>
+                    </div>
+
+<!--                    <div style="color: red">-->
+<!--                        <p th:if="${sign_error_msg}" >Invalid username and password</p>-->
+<!--                    </div>-->
+
+                    <div class="row">
+                        <label for="UserPswd">Password</label>
+                        <input id="UserPswd" name="UserPswd" type="password" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-check">
+                            <input type="checkbox" name="remember" value="true" id="rememberMe">
+                            <label for="rememberMe">Remember me</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn btn-primary w-100" type="submit">Login</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</html>

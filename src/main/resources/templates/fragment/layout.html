@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head th:replace="fragment/head :: headFragment"></head>
+
+<body>
+    <header th:replace="fragment/header :: headerFragment"></header>
+
+    <div layout:fragment="custom-content"></div>
+
+    <footer th:replace="fragment/footer :: footerFragment"></footer>
+</body>
+
+</html>

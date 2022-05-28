@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head id="head" th:fragment="headFragment">
+    <title>포폴</title>
+
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>-->
+
+    <link rel="stylesheet" th:href="@{/css/comm.css}" >
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+
+    <script th:src="@{/js/comm.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+
+    <!-- 컨텐츠 css 파일을 넣는다.-->
+    <th:block layout:fragment="location-css"></th:block>
+    <!-- 컨텐츠 script 파일을 넣는다.-->
+    <th:block layout:fragment="location-js"></th:block>
+    <!-- 컨텐츠 scss 파일을 넣는다.-->
+    <th:block layout:fragment="location-scss"></th:block>
+</head>
+</html>
