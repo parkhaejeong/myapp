@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/home")
-public class HomeController {
+@RequestMapping(value = "my/home")
+public class MyController {
 
     @Autowired
     private HomeMpp homeMpp;
@@ -25,15 +25,15 @@ public class HomeController {
         if(param != null && param.isEmpty() != true) {
             return "/screen/" + request.getRequestURI();
         }else {
-            return "/screen/home";
+            return "/screen/index";
         }
     }
 
-    @RequestMapping(value = "/home/getHomeData", method = RequestMethod.POST)
-    public String getHomeData(HttpServletRequest request, HomeModel homeModel, Model model) throws Exception {
+    @RequestMapping(value = "/getMyInfo", method = RequestMethod.POST)
+    public String getMyInfo(HttpServletRequest request, HomeModel homeModel, Model model) throws Exception {
         List<HomeModel> HomeData = this.homeMpp.getHomeData(homeModel);
-        model.addAttribute("HomeData", HomeData);
-        return StaticData.index(request) + " :: #HomeData";
+        model.addAttribute("Data", HomeData);
+        return StaticData.index(request) + " :: #Data";
     }
 
 }

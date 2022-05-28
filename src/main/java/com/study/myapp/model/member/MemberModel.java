@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class MemberModel {
+    //
     private Integer UserPid;
     private String UserId;
     private String UserPswd;
@@ -19,9 +20,11 @@ public class MemberModel {
     private String DetailAddr;
     private String Zip;
     private String DelYn;
-    private String CreatDt;
-    private Integer CreatPid;
-    private String ModifyDt;
-    private Integer ModifyPid;
+    private String CreatDate;
+    private Integer CreatUserPid;
+    private String ModifyDate;
+    private Integer ModifyUserPid;
+    //
+    private Integer RolePid;
     private String RoleName;
 }

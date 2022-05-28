@@ -3,10 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.myapp.mapper.member.MemberMpp">
     <select id="findByUserId" resultType="com.study.myapp.model.member.MemberModel">
-        SELECT u.*, concat("ROLE_", UPPER(r.RoleNm)) as RoleName
-        FROM myapp.user AS u
-                 INNER JOIN myapp.userMppRole AS ur ON u.UserPid = ur.UserPid
-                 INNER JOIN myapp.roleInfo AS r ON r.RolePid = ur.RolePid
-        WHERE u.UserId  = #{id};
+        SELECT u.*, concat("ROLE_", UPPER(r.RoleName)) as RoleName
+        FROM myapp.userInfo AS u
+            INNER JOIN myapp.userMppRole AS ur ON u.UserPid = ur.UserPid
+            INNER JOIN myapp.roleInfo AS r ON r.RolePid = ur.RolePid
+        WHERE u.UserId  = #{UserId};
     </select>
 </mapper>

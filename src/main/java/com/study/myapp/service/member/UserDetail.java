@@ -14,7 +14,7 @@ public class UserDetail implements UserDetails {
         this.member = member;
     }
 
-    public MemberModel getUser() {
+    public MemberModel getMember() {
         return this.member;
     }
 

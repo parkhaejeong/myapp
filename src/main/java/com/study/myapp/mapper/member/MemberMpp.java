@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface MemberMpp {
-    MemberModel findByUserId(@Param("id") String id);
+    MemberModel findByUserId(@Param("UserId") String UserId);
+    //MemberModel findByUserId(MemberModel memberModel);
 
     //유저 저장
     int userSave(MemberModel memberModel);

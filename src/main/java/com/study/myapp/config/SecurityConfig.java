@@ -29,9 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         //http.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 3).userDetailsService(userService); //3days
         http.authorizeRequests()
-                .antMatchers("/", "/signIn", "/signInProc", "/signError").permitAll()
-                //.antMatchers("/member/**").access("hasRole('MANAGEMENT') or hasRole('ADMIN')")
-                //.antMatchers("/admin/**").hasRole("ADMIN")
+                //.antMatchers("/", "/signIn", "/signInProc", "/signError").permitAll()
+                .antMatchers("/**").permitAll()
+                .antMatchers("/member/**").access("hasRole('MEMBER') or hasRole('ADMIN')")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
 
                 .and()

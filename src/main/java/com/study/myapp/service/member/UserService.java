@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
+    //@Autowired
+    //private MemberModel memberModel;
+
     @Autowired
     //private MemberMapper memberMapper;
     private MemberMpp memberMpp;
@@ -22,14 +25,16 @@ public class UserService implements UserDetailsService {
     //}
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         //ArrayList<MemberModel> userAuthes = memberMapper.findByUserId(id);
         //if(userAuthes.size() == 0) {
         //    throw new UsernameNotFoundException("User [" + id + "] Not Found!");
         //}
         //return new UserDetail(userAuthes);
 
-        MemberModel byUsername = memberMpp.findByUserId(username);
+        //memberModel.setUserId(userId);
+        //MemberModel byUsername = memberMpp.findByUserId(memberModel);
+        MemberModel byUsername = memberMpp.findByUserId(userId);
 
         if(byUsername != null) {
             return new UserDetail(byUsername);

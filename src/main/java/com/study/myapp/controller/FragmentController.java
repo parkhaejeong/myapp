@@ -8,13 +8,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FragmentController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
-        //return "index";
-        return "/screen/member/signIn";
+        return "index";
     }
+
+    //@RequestMapping("/home")
+    //public String home() {
+    //    return "/screen/home/home";
+    //}
 
     @RequestMapping("/home")
     public String home() {
-        return "/screen/home/home";
+        return "index";
     }
 
     @RequestMapping("/error_403")

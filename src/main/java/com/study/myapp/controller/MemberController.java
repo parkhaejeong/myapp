@@ -42,7 +42,7 @@ public class MemberController {
     public String sign_access(Model model, Authentication authentication) {
         //UserDetail userDetail = (UserDetail)authentication.getPrincipal();
         //model.addAttribute("sign_info", userDetail.getUsername());
-        return "redirect:/home";
+        return "redirect:/home/home";
     }
 
     // 로그인 정보
