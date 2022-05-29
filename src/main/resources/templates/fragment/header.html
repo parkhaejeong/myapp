@@ -3,8 +3,23 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <header id="header" th:fragment="headerFragment">
-    <div>
-        header
+    <div class="HeaderContainer">
+        <div class="BoxWarp">
+            <div class="BoxTop">
+                <span>제이제이홈</span>
+            </div>
+            <div class="BoxBottom">
+                <div>
+                    <span th:text="${#calendars.format(#calendars.createNow(),'yyyy년 MM월 dd일')}">yyyy-MM-dd</span>
+                    <span th:text="${#dates.dayOfWeekName(#calendars.createNow())}"></span>
+                </div>
+                <div class="Box">
+                    <span><a href="#">로그인</a></span>
+                    <span><a href="#">로그아웃</a></span>
+                    <span><a href="#">회원가입</a></span>
+                </div>
+            </div>
+        </div>
     </div>
 </header>
 </html>

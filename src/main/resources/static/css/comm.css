@@ -1,0 +1,39 @@
+.HeaderContainer{
+    background-image: url('/image/headerBack.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    height: 250px;
+}
+.HeaderContainer > .BoxWarp{
+    width: 100%;
+    flex-direction: column;
+}
+.HeaderContainer > .BoxWarp > div{
+    display: flex;
+}
+.HeaderContainer > .BoxWarp > .BoxTop{
+    color: #ffffff;
+    font-size: xx-large;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+}
+.HeaderContainer > .BoxWarp > .BoxBottom{
+    color: #ffffff;
+    height: 50px;
+    flex-direction: row-reverse;
+    justify-content: right;
+    align-items: center;
+}
+.HeaderContainer > .BoxWarp > .BoxBottom > .Box > span{
+    /*마우스포인트안생김*/
+    margin: 0 10px 0 0;
+    /*마우스포인트생김, 배경도칠해짐*/
+    padding: 3px 5px;
+    /*커서*/
+    /*cursor: pointer;*/
+}
+.SnbContainer{
+    width: 100%;
+}
