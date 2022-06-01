@@ -2,6 +2,7 @@ package com.study.myapp.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.myapp.model.member.MemberModel;
+import com.study.myapp.model.member.RememberMeModel;
 import com.study.myapp.service.member.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import javax.servlet.ServletException;
@@ -44,6 +47,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    //private UserDetailsService userDetailsService;
+    private UserService userService;
+
+    //@Autowired
+    //private RememberMeModel rememberMeModel;
 
     @Bean // 로그인 시 실행되는 메소드
     public AuthenticationProvider authenticationProvider(){
@@ -82,7 +91,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.rememberMe().tokenValiditySeconds(60 * 60 * 24 * 3).userDetailsService(userDetailsService)//3days
                 .csrf().disable()// 세션을 사용하지 않고 JWT 토큰을 활용하여 진행, csrf토큰검사를 비활성화
                 .authorizeRequests() // 인증절차에 대한 설정을 진행
-
                 .antMatchers("/","/ctgr/**", "/signIn", "/signInProc", "/signFailure").permitAll()
                 //.antMatchers("/**", "/signIn", "/signInProc", "/signFailure").permitAll() // 설정된 url은 인증되지 않더라도 누구든 접근 가능
                 .antMatchers("/admin/**").hasRole("ADMIN")
@@ -101,20 +109,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(failureHandlerHandler()) // 로그인 실패시 실행되는 메소드
 
                 .and()
+                .rememberMe()
+                .key("uniqueAndSecret")
+                .rememberMeParameter("remember-Me")
+                .tokenValiditySeconds(86400 * 30)
+                .userDetailsService(userService)
+                //.authenticationSuccessHandler(loginSuccessHandler())
+
+
+                .and()
                 .logout() // 로그아웃 설정
                 .logoutUrl("/logout") // 로그아웃시 맵핑되는 url
                 .logoutSuccessUrl("/") // 로그아웃 성공시 리다이렉트 주소
-                .invalidateHttpSession(true); // 세션 clear
-
+                .invalidateHttpSession(true) // 세션 clear
                 //.and()
                 //.exceptionHandling().accessDeniedPage("error403");
+
+                ;
     }
+
+    //@Bean
+    //public PersistentTokenRepository tokenRepository(){
+    //    JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+    //    jdbcTokenRepository.setDataSource(rememberMeModel);
+    //    return jdbcTokenRepository;
+    //}
+
     // 로그인 시 실행되는 메소드
     private class LoginAuthenticationProvider implements AuthenticationProvider {
-        @Autowired
-        //private UserDetailsService userDetailsService;
-        private UserService userService;
-
         @Autowired
         //private PasswordEncoder passwordEncoder;
         private BCryptPasswordEncoder passwordEncoder;
