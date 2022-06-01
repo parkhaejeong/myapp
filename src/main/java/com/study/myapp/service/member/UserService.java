@@ -34,7 +34,7 @@ public class UserService implements UserDetailsService {
                 }
                 roles.add(new SimpleGrantedAuthority(RoleNm));
             }
-            return new User(userId, userId, roles);
+            return new User(userId, RoleList.get(0).getUserPswd(), roles);
         }
         return null;
     }
