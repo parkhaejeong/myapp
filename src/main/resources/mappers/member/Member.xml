@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.myapp.mapper.member.MemberMpp">
-    <select id="findByUserId" resultType="com.study.myapp.model.member.MemberModel">
+    <select id="findByUserId" parameterType="String" resultType="com.study.myapp.model.member.MemberModel">
         SELECT u.*, ur.RolePid, concat("ROLE_", UPPER(r.RoleName)) as RoleName
         FROM myapp.userInfo AS u
             INNER JOIN myapp.userMppRole AS ur ON u.UserPid = ur.UserPid
