@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Controller
 public class MemberController {
-
     // 로그인 폼
     @GetMapping("/signIn")
     public String signIn(Model model) throws Exception {
@@ -24,15 +23,20 @@ public class MemberController {
     }
 
     // 로그인 진행
-    @PostMapping("/signInProc")
+    @RequestMapping("/signInProc")
     public String signInProc(Model model) throws Exception {
-        //return "/screens/home/home";
-        return "/screen/member/signIn";
+        String Path = "";
+        try {
+            Path = "/screen/member/signIn";
+        } catch (Exception e) {
+            Path = "/screen/error/403";
+        }
+        return  Path;
     }
 
     // 로그인 에러
-    @RequestMapping("/signError")
-    public String signError(Model model) {
+    @RequestMapping("/signFailure")
+    public String signFailure(Model model) {
         model.addAttribute("sign_error_msg", "Invalid username and password.");
         return "/screen/member/signIn";
     }
@@ -43,6 +47,28 @@ public class MemberController {
         //UserDetail userDetail = (UserDetail)authentication.getPrincipal();
         //model.addAttribute("sign_info", userDetail.getUsername());
         return "redirect:/home/home";
+    }
+
+    // 회원가입
+    @GetMapping("/signUp")
+    public String signUn(Model model) throws Exception {
+        return "/screen/member/signUp";
+    }
+    
+    // 403
+    @PostMapping("/error403")
+    public String error403(Model model) {
+        return "/error/403";
+    }
+    // 404
+    @PostMapping("/error404")
+    public String error404(Model model) {
+        return "/error/404";
+    }
+    // 500
+    @PostMapping("/error500")
+    public String error500(Model model) {
+        return "/error/500";
     }
 
     // 로그인 정보

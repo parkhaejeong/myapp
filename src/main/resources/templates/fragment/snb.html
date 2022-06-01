@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <div id="snb" th:fragment="snbFragment">
     <div class="SnbContainer">
         <div class="UsrWrap">
@@ -9,8 +10,8 @@
                 <img src="#">
             </div>
             <div>
-                <span><a href="#">MY</a></span>
-                <span><a href="#">관리</a></span>
+                <span><a href="#" sec:authorize="isAuthenticated()">MY</a></span>
+                <span><a href="#" sec:authorize="hasRole('ADMIN')">관리</a></span>
             </div>
         </div>
 

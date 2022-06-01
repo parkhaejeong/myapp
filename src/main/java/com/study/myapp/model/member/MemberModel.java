@@ -2,11 +2,16 @@ package com.study.myapp.model.member;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 public class MemberModel {
-    //
     private Integer UserPid;
     private String UserId;
     private String UserPswd;
@@ -20,11 +25,11 @@ public class MemberModel {
     private String DetailAddr;
     private String Zip;
     private String DelYn;
-    private String CreatDate;
-    private Integer CreatUserPid;
+    private String CreateDate;
+    private Integer CreateUserPid;
     private String ModifyDate;
     private Integer ModifyUserPid;
-    //
     private Integer RolePid;
     private String RoleName;
+    private List<Map<Integer, String>> RoleList;
 }
