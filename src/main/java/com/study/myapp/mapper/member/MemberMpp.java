@@ -10,7 +10,8 @@ import java.util.List;
 @Mapper
 //@Repository
 public interface MemberMpp {
-    List<MemberModel> findByUserId(@Param("UserId") String UserId);
+    // 로그인
+    MemberModel findByUserId(@Param("UserId") String UserId);
 
     //유저 저장
     int userSave(MemberModel memberModel);

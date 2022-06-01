@@ -21,21 +21,40 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        List<MemberModel> RoleList = memberMpp.findByUserId(userId);
-
-        if(RoleList != null && RoleList.size() > 0) {
-            int i;
-            String RoleNm = "";
-            List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
-            for(i=0; i< RoleList.size(); i++){
-                RoleNm = RoleList.get(i).getRoleName().trim();
-                if (RoleNm.equals("")) {
-                    continue;
-                }
-                roles.add(new SimpleGrantedAuthority(RoleNm));
-            }
-            return new User(userId, RoleList.get(0).getUserPswd(), roles);
+        MemberModel memberModel = memberMpp.findByUserId(userId);
+        if(memberModel != null) {
+            return new UserDetail(memberModel);
         }
         return null;
+
+        //MemberModel UserRole = memberMpp.findByUserId(userId);
+        //if(UserRole != null && UserRole.getRoleNames().isEmpty() == false) {
+        //    String[] RoleNames = UserRole.getRoleNames().split("\\||\\,");
+        //    int i;
+        //    String RoleNm = "";
+        //    List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
+        //    for (i=0; i < RoleNames.length; i++) {
+        //        if (i%2 == 0) {
+        //            continue;
+        //        }
+        //        RoleNm = RoleNames[i];
+        //        roles.add(new SimpleGrantedAuthority(RoleNm));
+        //    }
+        //    return new User(userId, UserRole.getUserPswd(), roles);
+        //}
+
+        //if(RoleList != null && RoleList.size() > 0) {
+        //    int i;
+        //    String RoleNm = "";
+        //    List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
+        //    for(i=0; i< RoleList.size(); i++){
+        //        RoleNm = RoleList.get(i).getRoleName().trim();
+        //        if (RoleNm.equals("")) {
+        //            continue;
+        //        }
+        //        roles.add(new SimpleGrantedAuthority(RoleNm));
+        //    }
+        //    return new User(userId, RoleList.get(0).getUserPswd(), roles);
+        //}
     }
 }

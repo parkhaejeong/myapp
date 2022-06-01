@@ -45,10 +45,6 @@ import java.util.Map;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/static/", "classpath:/public/", "classpath:/",
-            "classpath:/resources/", "classpath:/META-INF/resources/", "classpath:/META-INF/resources/webjars/" };
-
-
     @Bean // 로그인 시 실행되는 메소드
     public AuthenticationProvider authenticationProvider(){
         return new LoginAuthenticationProvider();
@@ -71,8 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        //web.ignoring().antMatchers("/css/**","/font/**","/image/**","/js/**","/lib/**","/vendor/**","/error");
-        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+        web.ignoring().antMatchers("/css/**","/font/**","/image/**","/js/**","/lib/**","/vendor/**","/error");
+        //web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     //@Override
@@ -87,10 +83,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()// 세션을 사용하지 않고 JWT 토큰을 활용하여 진행, csrf토큰검사를 비활성화
                 .authorizeRequests() // 인증절차에 대한 설정을 진행
 
-                .antMatchers("**", "/signIn", "/signInProc", "/signFailure").permitAll()
+                .antMatchers("/","/ctgr/**", "/signIn", "/signInProc", "/signFailure").permitAll()
                 //.antMatchers("/**", "/signIn", "/signInProc", "/signFailure").permitAll() // 설정된 url은 인증되지 않더라도 누구든 접근 가능
-                //.antMatchers("/admin/**").hasRole("ADMIN")
-                //.antMatchers("/member/**").hasAnyRole("MEMBER" , "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/scrt/**").hasAnyRole("MEMBER")
                 .anyRequest().authenticated()// 위 페이지 외 인증이 되어야 접근가능(ROLE에 상관없이)
 
                 .and()
@@ -108,8 +104,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout() // 로그아웃 설정
                 .logoutUrl("/logout") // 로그아웃시 맵핑되는 url
                 .logoutSuccessUrl("/") // 로그아웃 성공시 리다이렉트 주소
-                .invalidateHttpSession(true) // 세션 clear
-;
+                .invalidateHttpSession(true); // 세션 clear
+
                 //.and()
                 //.exceptionHandling().accessDeniedPage("error403");
     }
@@ -128,6 +124,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             String userid = authentication.getName(); //(String)authentication.getPrincipal();
             String password = (String)authentication.getCredentials();
 
+            //UserDetails user = userService.loadUserByUsername(userid);
             UserDetails user = userService.loadUserByUsername(userid);
             if (user == null) {
                 throw new BadCredentialsException("username is not found. username=" + userid);
@@ -136,8 +133,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             if(!passwordEncoder.matches(password,user.getPassword())){
                 throw new BadCredentialsException("password is not matched");
             }
-            //UsernamePasswordAuthenticationToken authenticationToken
-            //        = new UsernamePasswordAuthenticationToken(user.getUserId(),password,user.getAuthorities());
 
             UsernamePasswordAuthenticationToken authenticationToken
                     = new UsernamePasswordAuthenticationToken(userid,password,user.getAuthorities());
@@ -171,6 +166,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
             exception.printStackTrace();
 
+            //String s = request.getRequestURI();
+            //String s1 = request.getAuthType();
+            //String s2 = request.getUserPrincipal().getName();
+
+            response.sendRedirect("/signFailure");
             //writePrintErrorResponse(response, exception);
         }
     }

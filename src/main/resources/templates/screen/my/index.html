@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragment/layout}">
+
+<div layout:fragment="custom-content" id="MY_INDEX">
+
+<!--    &lt;!&ndash;ROLE_ADMIN 권한을 갖는다면 이 글이 보임&ndash;&gt;-->
+<!--    <h1 sec:authorize="hasRole('ROLE_ADMIN')">Has ROLE_ADMIN Role</h1>-->
+<!--    <h1 sec:authorize="hasRole('ADMIN')">Has ADMIN Role</h1>-->
+<!--    &lt;!&ndash;ROLE_OPERATION 권한을 갖는다면 이 글이 보임&ndash;&gt;-->
+<!--    <h1 sec:authorize="hasRole('ROLE_OPERATION')">Has ROLE_OPERATION Role</h1>-->
+<!--    <h1 sec:authorize="hasRole('OPERATION')">Has OPERATION Role</h1>-->
+<!--    &lt;!&ndash;ROLE_MANAGEMENT 권한을 갖는다면 이 글이 보임&ndash;&gt;-->
+<!--    <h1 sec:authorize="hasRole('ROLE_MANAGEMENT')">Has ROLE_MANAGEMENT Role</h1>-->
+<!--    <h1 sec:authorize="hasRole('MANAGEMENT')">Has MANAGEMENT Role</h1>-->
+
+<!--    &lt;!&ndash;어떤 권한이건 상관없이 인증이 되었다면 이 글이 보임&ndash;&gt;-->
+<!--    <div sec:authorize="isAuthenticated()">-->
+<!--        Only Authenticated user can see this Text-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash;인증시 사용된 객체에 대한 정보&ndash;&gt;-->
+<!--    <b>Authenticated DTO:</b>-->
+<!--    <div sec:authentication="principal"></div>-->
+
+<!--    &lt;!&ndash;인증시 사용된 객체의 Username (ID)&ndash;&gt;-->
+<!--    <b>Authenticated name:</b>-->
+<!--    <div sec:authentication="name"></div>-->
+
+<!--    &lt;!&ndash;객체의 id&ndash;&gt;-->
+<!--    <b>Authenticated id:</b>-->
+<!--    <div sec:authentication="principal.id"></div>-->
+
+<!--    &lt;!&ndash;객체의 nm&ndash;&gt;-->
+<!--    <b>Authenticated nm:</b>-->
+<!--    <div sec:authentication="principal.nm"></div>-->
+
+<!--    &lt;!&ndash;객체의 password&ndash;&gt;-->
+<!--    <b>Authenticated password:</b>-->
+<!--    <div sec:authentication="principal.password"></div>-->
+
+<!--    &lt;!&ndash;객체의 권한&ndash;&gt;-->
+<!--    <b>Authenticated user role:</b>-->
+<!--    <div sec:authentication="principal.authorities"></div>-->
+
+
+    <script type="text/javascript" th:inline="javascript">
+        let MY_INDEX = (function () {
+            let $container = $("#MY_INDEX");
+
+            let init = function () {
+            };
+
+            let registerEventHandler = function () {
+            };
+
+            return {
+                init: function () {
+                    init();
+                    registerEventHandler();
+                }
+            };
+        })();
+
+        MY_INDEX.init();
+    </script>
+</div>
+</html>

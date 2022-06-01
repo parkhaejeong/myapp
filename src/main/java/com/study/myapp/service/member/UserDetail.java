@@ -2,10 +2,13 @@ package com.study.myapp.service.member;
 
 import com.study.myapp.model.member.MemberModel;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class UserDetail implements UserDetails {
     private MemberModel member;
@@ -18,27 +21,46 @@ public class UserDetail implements UserDetails {
         return this.member;
     }
 
+    //public String getUserId() {
+    //    return member.getUserId();
+    //}
+    //public String getUserPswd() {
+    //    return member.getUserName();
+    //}
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        int i;
+        String RoleNm = "";
+        String[] RoleNames = member.getRoleNames().split("\\||\\,");
         Collection<GrantedAuthority> collect = new ArrayList<>();
-        collect.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return member.getRoleName();
+        for (i=0; i < RoleNames.length; i++) {
+            if (i%2 == 0) {
+                continue;
             }
-        });
+            RoleNm = RoleNames[i];
+            collect.add(new SimpleGrantedAuthority(RoleNm));
+        }
         return collect;
+
+        //Collection<GrantedAuthority> collect = new ArrayList<>();
+        //collect.add(new GrantedAuthority() {
+        //    @Override
+        //    public String getAuthority() {
+        //        return member.getRoleName();
+        //    }
+        //});
+        //return collect;
     }
 
     @Override
     public String getPassword() {
-        //return member.get(0).getPswd();
         return member.getUserPswd();
     }
 
     @Override
     public String getUsername() {
-        //return member.get(0).getNm();
         return member.getUserName();
     }
 

@@ -31,5 +31,5 @@ public class MemberModel {
     private Integer ModifyUserPid;
     private Integer RolePid;
     private String RoleName;
-    private List<Map<Integer, String>> RoleList;
+    private String RoleNames;
 }

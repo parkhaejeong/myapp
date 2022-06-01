@@ -8,10 +8,10 @@
 
 <div layout:fragment="custom-content" id="SIGNUP">
 
-    회원가입
-    <script type="text/javascript" th:inline="javascript">
-        let SIGNUP = (function () {
-            let $container = $("#SIGNUP");
+    권한쓰기
+    <script type="text/javascript" th:inline="ROLEWRITE">
+        let ROLEWRITE = (function () {
+            let $container = $("#ROLEWRITE");
 
             let init = function () {
             };
@@ -27,7 +27,7 @@
             };
         })();
 
-        SIGNUP.init();
+        ROLEWRITE.init();
     </script>
 </div>
 </html>

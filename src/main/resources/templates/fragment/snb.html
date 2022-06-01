@@ -10,8 +10,8 @@
                 <img src="#">
             </div>
             <div>
-                <span><a href="#" sec:authorize="isAuthenticated()">MY</a></span>
-                <span><a href="#" sec:authorize="hasRole('ADMIN')">관리</a></span>
+                <span><a th:href="@{/my/index}" sec:authorize="isAuthenticated()">MY</a></span>
+                <span><a th:href="@{/admin/index}" sec:authorize="hasRole('ADMIN')">관리</a></span>
             </div>
         </div>
 

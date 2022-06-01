@@ -6,12 +6,11 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragment/layout}">
 
-<div layout:fragment="custom-content" id="SIGNUP">
-
-    회원가입
-    <script type="text/javascript" th:inline="javascript">
-        let SIGNUP = (function () {
-            let $container = $("#SIGNUP");
+<div layout:fragment="custom-content" id="ROLEDETAIL">
+    권한상세
+    <script type="text/javascript" th:inline="ROLEDETAIL">
+        let ROLEDETAIL = (function () {
+            let $container = $("#ROLELIST");
 
             let init = function () {
             };
@@ -27,7 +26,7 @@
             };
         })();
 
-        SIGNUP.init();
+        ROLEDETAIL.init();
     </script>
 </div>
 </html>
