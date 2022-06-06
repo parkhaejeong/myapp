@@ -6,18 +6,21 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragment/layout}">
 
-<div layout:fragment="custom-content" id="ROLEDETAIL">
-    권한상세
+<div layout:fragment="admin-content" id="ROLEDETAIL">
+    <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
+    <div>
+        <button type="button" class="btn btn-primary btn-sm">목록</button>
+        <button type="button" class="btn btn-primary btn-sm">수정</button>
+        <button type="button" class="btn btn-primary btn-sm">삭제</button>
+    </div>
+    <h4>권한상세</h4>
     <script type="text/javascript" th:inline="javascript">
         let ROLEDETAIL = (function () {
             let $container = $("#ROLELIST");
-
             let init = function () {
             };
-
             let registerEventHandler = function () {
             };
-
             return {
                 init: function () {
                     init();
@@ -25,7 +28,6 @@
                 }
             };
         })();
-
         ROLEDETAIL.init();
     </script>
 </div>

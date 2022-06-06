@@ -1,4 +1,4 @@
-package com.study.myapp.model.member;
+package com.study.myapp.model.sign;
 
 import lombok.Data;
 

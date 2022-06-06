@@ -37,3 +37,17 @@
 .SnbContainer{
     width: 100%;
 }
+.navLeftAlign {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.navLeftAlign > ul{
+    display: flex;
+    list-style: none;
+    padding: 0px;
+}
+.navLeftAlign > ul > li{
+    margin: 2px;
+    padding: 0px 10px;
+}

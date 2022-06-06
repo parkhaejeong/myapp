@@ -1,24 +1,22 @@
-package com.study.myapp.service.member;
+package com.study.myapp.service.sign;
 
-import com.study.myapp.model.member.MemberModel;
+import com.study.myapp.model.sign.SignModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class UserDetail implements UserDetails {
-    private MemberModel member;
+    private SignModel signModel;
 
-    public UserDetail(MemberModel member) {
-        this.member = member;
+    public UserDetail(SignModel member) {
+        this.signModel = member;
     }
 
-    public MemberModel getMember() {
-        return this.member;
+    public SignModel getMember() {
+        return this.signModel;
     }
 
     //public String getUserId() {
@@ -33,7 +31,7 @@ public class UserDetail implements UserDetails {
 
         int i;
         String RoleNm = "";
-        String[] RoleNames = member.getRoleNames().split("\\||\\,");
+        String[] RoleNames = signModel.getRoleNames().split("\\||\\,");
         Collection<GrantedAuthority> collect = new ArrayList<>();
         for (i=0; i < RoleNames.length; i++) {
             if (i%2 == 0) {
@@ -56,12 +54,12 @@ public class UserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return member.getUserPswd();
+        return signModel.getUserPswd();
     }
 
     @Override
     public String getUsername() {
-        return member.getUserName();
+        return signModel.getUserName();
     }
 
     @Override

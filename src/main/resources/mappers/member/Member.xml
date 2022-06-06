@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.study.myapp.mapper.member.MemberMpp">
-    <select id="findByUserId" parameterType="String" resultType="com.study.myapp.model.member.MemberModel">
+<mapper namespace="com.study.myapp.mapper.sign.SignMpp">
+    <select id="findByUserId" parameterType="String" resultType="com.study.myapp.model.sign.SignModel">
         SELECT UI.*, GROUP_CONCAT(RI.RolePid, '|', concat("ROLE_", UPPER(RI.RoleName))) AS RoleNames
         FROM myapp.userInfo AS UI
                  INNER JOIN myapp.usermpprole AS UP ON UP.UserPid = UI.UserPid

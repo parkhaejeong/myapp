@@ -7,32 +7,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class FragmentController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() {
-        return "index";
-    }
-
-    //@RequestMapping("/home")
-    //public String home() {
-    //    return "/screen/home/home";
-    //}
-
-    @RequestMapping("/home")
-    public String home() {
-        return "index";
-    }
+    public String index() { return "index";}
 
     @RequestMapping("/error_403")
     public String error_403() {
-        return "/error/403";
+        return "/screen/error/403";
     }
 
     @RequestMapping("/error_404")
     public String error_404() {
-        return "/error/404";
+        return "/screen/error/404";
     }
 
     @RequestMapping("/error_500")
     public String error_500() {
-        return "/error/500";
+        return "/screen/error/500";
     }
 }

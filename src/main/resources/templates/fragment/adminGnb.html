@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<div id="adminGnb" th:fragment="adminGnbFragment">
+    <nav class="navLeftAlign">
+        <ul>
+            <li><a th:href="@{/admin/member/memberList}">회원관리</a></li>
+            <li><a th:href="@{/admin/role/roleList}">권한관리</a></li>
+            <li><a th:href="@{/admin/code/codeList}">코드관리</a></li>
+            <li><a th:href="@{/admin/ctgr/ctgrList}">카테고리관리</a></li>
+            <li><a th:href="@{/admin/cntnt/cntntList}">컨텐츠관리</a></li>
+        </ul>
+    </nav>
+</div>
+</html>

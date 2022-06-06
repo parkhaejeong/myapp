@@ -1,17 +1,11 @@
-package com.study.myapp.model.member;
+package com.study.myapp.model.sign;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
-public class MemberModel {
+public class SignModel {
     private Integer UserPid;
     private String UserId;
     private String UserPswd;

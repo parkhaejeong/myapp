@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping(value = "admin/member")
-public class MemberController {
-
+@RequestMapping(value = "admin/cntnt")
+public class CntntController {
     @RequestMapping(value = "/{param}", method = RequestMethod.GET)
     public String index(HttpServletRequest request, @PathVariable("param") String param) {
         if(param != null && param.isEmpty() != true) {

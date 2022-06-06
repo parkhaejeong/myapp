@@ -7,18 +7,19 @@
       layout:decorate="~{fragment/layout}">
 
 <div layout:fragment="custom-content" id="SIGNUP">
-
-    권한리스트
+    <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
+    <div>
+        <button type="button" class="btn btn-primary btn-sm">목록</button>
+        <button type="button" class="btn btn-primary btn-sm">신규</button>
+    </div>
+    <h4>권한리스트</h4>
     <script type="text/javascript" th:inline="javascript">
         let ROLELIST = (function () {
             let $container = $("#ROLELIST");
-
             let init = function () {
             };
-
             let registerEventHandler = function () {
             };
-
             return {
                 init: function () {
                     init();
@@ -26,7 +27,6 @@
                 }
             };
         })();
-
         ROLELIST.init();
     </script>
 </div>

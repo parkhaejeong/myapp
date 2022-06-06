@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping(value = "admin/member")
-public class MemberController {
+@RequestMapping(value = "admin/role")
+public class RoleController {
 
     @RequestMapping(value = "/{param}", method = RequestMethod.GET)
     public String index(HttpServletRequest request, @PathVariable("param") String param) {
@@ -19,4 +19,5 @@ public class MemberController {
             return "/screen/index";
         }
     }
+
 }

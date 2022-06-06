@@ -7,63 +7,34 @@
       layout:decorate="~{fragment/layout}">
 
 <div layout:fragment="custom-content" id="HOME">
-
     안녕하세요. 제이제이홈입니다. <br>
     방문해주셔서 감사합니다! <br>
 
-    <!--ROLE_ADMIN 권한을 갖는다면 이 글이 보임-->
-    <h1 sec:authorize="hasRole('ROLE_ADMIN')">Has ROLE_ADMIN Role</h1>
-    <h1 sec:authorize="hasRole('ADMIN')">Has ADMIN Role</h1>
-    <!--ROLE_OPERATION 권한을 갖는다면 이 글이 보임-->
-    <h1 sec:authorize="hasRole('ROLE_OPERATION')">Has ROLE_OPERATION Role</h1>
-    <h1 sec:authorize="hasRole('OPERATION')">Has OPERATION Role</h1>
-    <!--ROLE_MANAGEMENT 권한을 갖는다면 이 글이 보임-->
-    <h1 sec:authorize="hasRole('ROLE_MANAGEMENT')">Has ROLE_MANAGEMENT Role</h1>
-    <h1 sec:authorize="hasRole('MANAGEMENT')">Has MANAGEMENT Role</h1>
-
-    <!--어떤 권한이건 상관없이 인증이 되었다면 이 글이 보임-->
-    <div sec:authorize="isAuthenticated()">
-        Only Authenticated user can see this Text
-    </div>
-
-    <!--인증시 사용된 객체에 대한 정보-->
-    <b>Authenticated DTO:</b>
-    <div sec:authentication="principal"></div>
-
-<!--    &lt;!&ndash;인증시 사용된 객체의 Username (ID)&ndash;&gt;-->
-<!--    <b>Authenticated name:</b>-->
-<!--    <div sec:authentication="name"></div>-->
-
-<!--    &lt;!&ndash;객체의 id&ndash;&gt;-->
-<!--    <b>Authenticated id:</b>-->
-<!--    <div sec:authentication="principal.UserId"></div>-->
-<!--    &lt;!&ndash;객체의 nm&ndash;&gt;-->
-<!--    <b>Authenticated nm:</b>-->
-<!--    <div sec:authentication="principal.UserPswd"></div>-->
-
-<!--    &lt;!&ndash;객체의 password&ndash;&gt;-->
-<!--    <b>Authenticated password:</b>-->
-<!--    <div sec:authentication="principal.password"></div>-->
 
     <script type="text/javascript" th:inline="javascript">
-        let HOME = (function () {
-            let $container = $("#HOME");
+        const HOME = {
+            $container:$("#HOME"),
 
-            let init = function () {
-            };
+            init:function(){
 
-            let registerEventHandler = function () {
-            };
+            },
 
-            return {
-                init: function () {
-                    init();
-                    registerEventHandler();
-                }
-            };
-        })();
+            registerEventHandler:function(){
 
+            }
+        }
         HOME.init();
+
+        //class HOME3 {
+        //    constructor() {
+        //    }
+        //    static init(){
+        //    }
+        //    static registerEventHandler(){
+        //    }
+        //    static getVersion(){
+        //    }
+        //}
     </script>
 </div>
 </html>

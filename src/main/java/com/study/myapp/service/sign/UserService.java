@@ -1,27 +1,21 @@
-package com.study.myapp.service.member;
+package com.study.myapp.service.sign;
 
-import com.study.myapp.mapper.member.MemberMpp;
-import com.study.myapp.model.member.MemberModel;
+import com.study.myapp.mapper.sign.SignMpp;
+import com.study.myapp.model.sign.SignModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
-    private MemberMpp memberMpp;
+    private SignMpp signMpp;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        MemberModel memberModel = memberMpp.findByUserId(userId);
+        SignModel memberModel = signMpp.findByUserId(userId);
         if(memberModel != null) {
             return new UserDetail(memberModel);
         }
