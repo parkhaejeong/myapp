@@ -126,18 +126,20 @@
         }
 
         let setCodeAction = function (eventNm) {
-
-            console.log(eventNm.name);
-
             let url;
+            let paramData;
             if (eventNm.name === 'btnAdd') {
                 url = '/admin/code/codeWrite/setCodeAdd';
+                paramData = CODEWRITE.container.find('form').serializeObject();
             } else if (eventNm.name === 'btnModify') {
                 url = '/admin/code/codeWrite/setCodeModify';
+                paramData = CODEWRITE.container.find('form').serializeObject();
             } else if (eventNm.name === 'btnDelete') {
                 url = '/admin/code/codeWrite/setCodeDelete';
+                paramData = $.extend(CODEWRITE.container.find('form').serializeObject(),{
+                    DelYn : '1'
+                });
             }
-            let paramData = CODEWRITE.container.find('form').serializeObject();
             COM.callAjax(url, 'POST', 'html', paramData,
                 function (result, textStatus, data) {
                     console.log('success');

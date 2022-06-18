@@ -14,7 +14,7 @@
         ,CD.CodeDesc
         ,CD.Sort
         ,CD.DelYn
-        ,case CD.DelYn when '0' then '삭제' when '1' then '미삭제' else '-' end as Del
+        ,case CD.DelYn when '1' then '삭제' when '0' then '미삭제' else '-' end as Del
         ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateName
         ,CD.CreateDate
         ,CD.CreateUserPid
@@ -50,7 +50,7 @@
         ,CD.CodeDesc
         ,CD.Sort
         ,CD.DelYn
-        ,case CD.DelYn when '0' then '삭제' when '1' then '미삭제' else '-' end as Del
+        ,case CD.DelYn when '1' then '삭제' when '0' then '미삭제' else '-' end as Del
         ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateName
         ,CD.CreateDate
         ,CD.CreateUserPid

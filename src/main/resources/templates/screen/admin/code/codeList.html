@@ -73,6 +73,7 @@
                     th:each="code, idx : ${codeList}"
                     th:data-groupnm="${code?.GroupNm}"
                     th:data-code="${code?.Code}"
+                    th:data-delyn="${code?.DelYn}"
                     th:classappend="${code?.DelYn} == '1' ? strikeThrough">
                     <td th:text="${code.RowNum}">순번</td>
                     <td th:text="${code.GroupNm}">그룹</td>
@@ -104,27 +105,30 @@
             let paramData = CODELIST.container.find('form').serializeObject();
             COM.callAjax('/admin/code/codeList/getCodeList', 'POST', 'html', paramData,
                 function (result, textStatus, data) {
+                    //console.log('getCodeListSuccess');
                     CODELIST.container.find('#codeListData').replaceWith(result);
                 }, function (xhr, errorName, error) {
+                    //console.log('getCodeListError');
                     CODELIST.container.find('#codeListData').replaceWith("<tr><td colspan='19'>Ajax Error<td></tr>");
                 }, function () {
                     // complete
                 });
         };
 
-        let setCodeDelete = function (param1, param2) {
+        let setCodeDelete = function (param1, param2, param3) {
             COM.callAjax('/admin/code/codeList/setCodeDelete', 'POST', 'html', {
                     GroupNm: param1,
                     Code: param2,
+                    DelYn : param3 === '1' ? '0' : '1'
                 },
                 function (result, textStatus, data) {
-                    console.log('success');
+                    console.log('DeleteSuccess');
                     //container.find('#codeListData').replaceWith(result);
                 }, function (xhr, errorName, error) {
                     console.log('error');
                     //container.find('#codeListData').replaceWith("<tr><td colspan='16'>Ajax Error<td></tr>");
                 }, function () {
-                    // complete
+                    getCodeList();
                 });
         };
 
@@ -173,10 +177,11 @@
                     e.preventDefault();
                     let param1 = $(this).parents('tr').data('groupnm');
                     let param2 = $(this).parents('tr').data('code');
+                    let param3 = $(this).parents('tr').data('delyn');
                     if (COM.isNullOrEmpty(param1) || COM.isNullOrEmpty(param2)) {
                         alert('올바른 접근이 아닙니다.');
                     } else {
-                        setCodeDelete(param1,param2);
+                        setCodeDelete(param1,param2,param3);
                     }
                 });
             }

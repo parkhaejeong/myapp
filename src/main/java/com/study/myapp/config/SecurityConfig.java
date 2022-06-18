@@ -39,29 +39,35 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserService userService;
 
-    @Bean // 로그인 성공 시 실행되는 메소드
-    public AuthenticationSuccessHandler successHandlerHandler() {
-        return new LoginSuccessHandler();
-    }
-
-    @Bean // 로그인 실패 시 실행되는 메소드
-    public AuthenticationFailureHandler failureHandlerHandler() {
-        return new LoginFailureHandler();
-    }
-
-    @Bean // 패스워드 암호화 관련 메소드
+    @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean // 로그인 시 실행되는 메소드
-    public AuthenticationProvider authenticationProvider(){
-        //return new LoginAuthenticationProvider();
-        return new LoginAuthenticationProvider(userService, bCryptPasswordEncoder());
-    }
+//custom
+//    @Autowired
+//    private UserService userService;
+//    @Bean // 로그인 성공 시 실행되는 메소드
+//    public AuthenticationSuccessHandler successHandlerHandler() {
+//        return new LoginSuccessHandler();
+//    }
+//
+//    @Bean // 로그인 실패 시 실행되는 메소드
+//    public AuthenticationFailureHandler failureHandlerHandler() {
+//        return new LoginFailureHandler();
+//    }
+//
+//    @Bean // 패스워드 암호화 관련 메소드
+//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean // 로그인 시 실행되는 메소드
+//    public AuthenticationProvider authenticationProvider(){
+//        //return new LoginAuthenticationProvider();
+//        return new LoginAuthenticationProvider(userService, bCryptPasswordEncoder());
+//    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -91,19 +97,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/signIn")//로그인폼URL // 접근이 차단된 페이지 클릭시 이동할 url
                 .loginProcessingUrl("/signInProc")//로그인폼액션URL // 로그인시 맵핑되는 url
                 .failureUrl("/signFailure")//실패시URL
-                //.defaultSuccessUrl("/signAccess")//성공시이동될페이지URL
+                .defaultSuccessUrl("/signAccess")//성공시이동될페이지URL, //custom 사용 시 주석
                 .usernameParameter("UserId")  // view form 태그 내에 로그인 할 id 에 맵핑되는 name ( form 의 name )
                 .passwordParameter("UserPswd")  // view form 태그 내에 로그인 할 password 에 맵핑되는 name ( form 의 name )
-                .successHandler(successHandlerHandler()) // 로그인 성공시 실행되는 메소드
-                .failureHandler(failureHandlerHandler()) // 로그인 실패시 실행되는 메소드
+                //.successHandler(successHandlerHandler()) // 로그인 성공시 실행되는 메소드//custom
+                //.failureHandler(failureHandlerHandler()) // 로그인 실패시 실행되는 메소드//custom
 
                 .and()
                 .rememberMe()
                 .key("uniqueAndSecret")
                 .rememberMeParameter("remember-Me")
                 .tokenValiditySeconds(86400 * 30)
-                .userDetailsService(userService)
-                //.authenticationSuccessHandler(loginSuccessHandler())
+                //.userDetailsService(userService) //custom
+                ////.authenticationSuccessHandler(loginSuccessHandler())
 
 
                 .and()
@@ -116,105 +122,77 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 ;
     }
-
-    //@Bean
-    //public PersistentTokenRepository tokenRepository(){
-    //    JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
-    //    jdbcTokenRepository.setDataSource(rememberMeModel);
-    //    return jdbcTokenRepository;
-    //}
-
-    // 로그인 시 실행되는 메소드
-    private class LoginAuthenticationProvider implements AuthenticationProvider {
-        //@Autowired
-        //private PasswordEncoder passwordEncoder;
-        //private BCryptPasswordEncoder passwordEncoder;
-
-        private final UserService userService;
-        private final BCryptPasswordEncoder passwordEncoder;
-        public LoginAuthenticationProvider(UserService userDetailsService, BCryptPasswordEncoder passwordEncoder) {
-            this.userService = userDetailsService;
-            this.passwordEncoder = passwordEncoder;
-        }
-
-        @Override
-        public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-            String userid = authentication.getName(); //(String)authentication.getPrincipal();
-            String password = (String)authentication.getCredentials();
-
-            //UserDetails user = userService.loadUserByUsername(userid);
-            UserDetails user = userService.loadUserByUsername(userid);
-            if (user == null) {
-                throw new BadCredentialsException("username is not found. username=" + userid);
-            }
-
-            if(!passwordEncoder.matches(password,user.getPassword())){
-                throw new BadCredentialsException("password is not matched");
-            }
-
-            UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(userid,password,user.getAuthorities());
-
-            return authenticationToken;
-
-            //return new CustomAuthenticationToken(userid, password, user.getAuthorities());
-
-        }
-        // 토큰 타입과 일치할 때 인증
-        @Override
-        public boolean supports(Class<?> authentication) {
-            return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
-        }
-    }
-
-    //public class CustomAuthenticationToken extends AbstractAuthenticationToken {
-    //    private String email;
-    //    private String credentials;
-    //    public CustomAuthenticationToken(String email, String credentials, Collection<? extends GrantedAuthority> authorities) {
-    //        super(authorities);
-    //        this.email = email;
-    //        this.credentials = credentials;
-    //    }
-    //    public CustomAuthenticationToken(Collection<? extends GrantedAuthority> authorities) {
-    //        super(authorities);
-    //    }
-    //    @Override
-    //    public Object getCredentials() {
-    //        return this.credentials;
-    //    }
-    //    @Override
-    //    public Object getPrincipal() {
-    //        return this.email;
-    //    }
-    //}
-
-    // 로그인 성공 시 실행되는 메소드
-    private class LoginSuccessHandler implements AuthenticationSuccessHandler {
-        @Override
-        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-            clearAuthenticationAttributes(request);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            response.sendRedirect("/");
-        }
-        private void clearAuthenticationAttributes(HttpServletRequest re) {
-            HttpSession session = re.getSession(false);
-            if (session != null){
-                session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-            }
-        }
-    }
-    // 로그인 실패 시 실행되는 메소드
-    private class LoginFailureHandler implements AuthenticationFailureHandler {
-        @Override
-        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-            exception.printStackTrace();
-
-            //String s = request.getRequestURI();
-            //String s1 = request.getAuthType();
-            //String s2 = request.getUserPrincipal().getName();
-
-            response.sendRedirect("/signFailure");
-            //writePrintErrorResponse(response, exception);
-        }
-    }
+//custom
+//    // 로그인 시 실행되는 메소드
+//    private class LoginAuthenticationProvider implements AuthenticationProvider {
+//        //@Autowired
+//        //private PasswordEncoder passwordEncoder;
+//        //private BCryptPasswordEncoder passwordEncoder;
+//
+//        private final UserService userService;
+//        private final BCryptPasswordEncoder passwordEncoder;
+//        public LoginAuthenticationProvider(UserService userDetailsService, BCryptPasswordEncoder passwordEncoder) {
+//            this.userService = userDetailsService;
+//            this.passwordEncoder = passwordEncoder;
+//        }
+//
+//        @Override
+//        public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+//            String userid = authentication.getName(); //(String)authentication.getPrincipal();
+//            String password = (String)authentication.getCredentials();
+//
+//            //UserDetails user = userService.loadUserByUsername(userid);
+//            UserDetails user = userService.loadUserByUsername(userid);
+//            if (user == null) {
+//                throw new BadCredentialsException("username is not found. username=" + userid);
+//            }
+//
+//            if(!passwordEncoder.matches(password,user.getPassword())){
+//                throw new BadCredentialsException("password is not matched");
+//            }
+//
+//            UsernamePasswordAuthenticationToken authenticationToken
+//                    = new UsernamePasswordAuthenticationToken(userid,password,user.getAuthorities());
+//
+//            return authenticationToken;
+//
+//            //return new CustomAuthenticationToken(userid, password, user.getAuthorities());
+//
+//        }
+//        // 토큰 타입과 일치할 때 인증
+//        @Override
+//        public boolean supports(Class<?> authentication) {
+//            return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
+//        }
+//    }
+//
+//    // 로그인 성공 시 실행되는 메소드
+//    private class LoginSuccessHandler implements AuthenticationSuccessHandler {
+//        @Override
+//        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+//            clearAuthenticationAttributes(request);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            response.sendRedirect("/");
+//        }
+//        private void clearAuthenticationAttributes(HttpServletRequest re) {
+//            HttpSession session = re.getSession(false);
+//            if (session != null){
+//                session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+//            }
+//        }
+//    }
+//    // 로그인 실패 시 실행되는 메소드
+//    private class LoginFailureHandler implements AuthenticationFailureHandler {
+//        @Override
+//        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+//            exception.printStackTrace();
+//
+//            //String s = request.getRequestURI();
+//            //String s1 = request.getAuthType();
+//            //String s2 = request.getUserPrincipal().getName();
+//
+//            response.sendRedirect("/signFailure");
+//            //writePrintErrorResponse(response, exception);
+//        }
+//    }
 }

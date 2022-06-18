@@ -30,13 +30,15 @@ public class SignController {
         return "/screen/sign/signIn";
     }
 
-    //// 로그인 성공 후 접근
-    //@GetMapping("/signAccess")
-    //public String sign_access(Model model, Authentication authentication) {
-    //    //UserDetail userDetail = (UserDetail)authentication.getPrincipal();
-    //    //model.addAttribute("sign_info", userDetail.getUsername());
-    //    return "redirect:/home/home";
-    //}
+    // 로그인 성공 후 접근
+    @GetMapping("/signAccess")
+    public String sign_access(Model model, Authentication authentication) {
+        //UserDetail userDetail = (UserDetail)authentication.getPrincipal();
+        //model.addAttribute("sign_info", userDetail.getUsername());
+
+        //return "redirect:/home/home";
+        return "redirect:/";
+    }
 
     // 회원가입
     @GetMapping("/signUp")
