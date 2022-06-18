@@ -1,4 +1,4 @@
-package com.study.myapp.service.home.Impl;
+package com.study.myapp.service.home.impl;
 
 import com.study.myapp.mapper.home.HomeMpp;
 import com.study.myapp.model.home.HomeModel;

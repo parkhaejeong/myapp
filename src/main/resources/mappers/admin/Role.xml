@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.myapp.mapper.admin.RoleMpp">
+    <select id="getRoleList" parameterType="com.study.myapp.model.admin.RoleModel" resultType="com.study.myapp.model.admin.RoleModel">
+
+    </select>
+    <select id="getRole" parameterType="com.study.myapp.model.admin.RoleModel" resultType="com.study.myapp.model.admin.RoleModel">
+
+    </select>
+    <insert id="setRoleAdd" parameterType="com.study.myapp.model.admin.RoleModel">
+
+    </insert>
+    <update id="setRoleModify" parameterType="com.study.myapp.model.admin.RoleModel">
+
+    </update>
+    <update id="setRoleDelete" parameterType="com.study.myapp.model.admin.RoleModel">
+
+    </update>
+</mapper>

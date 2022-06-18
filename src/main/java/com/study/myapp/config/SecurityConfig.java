@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collection;
 
 //@Bean
 //개발자가 작성한 메서드의 return 되는 객체를 Bean으로 만드는 것이다.
@@ -37,16 +40,7 @@ import java.io.IOException;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    //private UserDetailsService userDetailsService;
     private UserService userService;
-
-    //@Autowired
-    //private RememberMeModel rememberMeModel;
-
-    @Bean // 로그인 시 실행되는 메소드
-    public AuthenticationProvider authenticationProvider(){
-        return new LoginAuthenticationProvider();
-    }
 
     @Bean // 로그인 성공 시 실행되는 메소드
     public AuthenticationSuccessHandler successHandlerHandler() {
@@ -61,6 +55,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean // 패스워드 암호화 관련 메소드
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean // 로그인 시 실행되는 메소드
+    public AuthenticationProvider authenticationProvider(){
+        //return new LoginAuthenticationProvider();
+        return new LoginAuthenticationProvider(userService, bCryptPasswordEncoder());
     }
 
     @Override
@@ -126,9 +126,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 로그인 시 실행되는 메소드
     private class LoginAuthenticationProvider implements AuthenticationProvider {
-        @Autowired
+        //@Autowired
         //private PasswordEncoder passwordEncoder;
-        private BCryptPasswordEncoder passwordEncoder;
+        //private BCryptPasswordEncoder passwordEncoder;
+
+        private final UserService userService;
+        private final BCryptPasswordEncoder passwordEncoder;
+        public LoginAuthenticationProvider(UserService userDetailsService, BCryptPasswordEncoder passwordEncoder) {
+            this.userService = userDetailsService;
+            this.passwordEncoder = passwordEncoder;
+        }
 
         @Override
         public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -149,6 +156,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     = new UsernamePasswordAuthenticationToken(userid,password,user.getAuthorities());
 
             return authenticationToken;
+
+            //return new CustomAuthenticationToken(userid, password, user.getAuthorities());
+
         }
         // 토큰 타입과 일치할 때 인증
         @Override
@@ -156,6 +166,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             return UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication);
         }
     }
+
+    //public class CustomAuthenticationToken extends AbstractAuthenticationToken {
+    //    private String email;
+    //    private String credentials;
+    //    public CustomAuthenticationToken(String email, String credentials, Collection<? extends GrantedAuthority> authorities) {
+    //        super(authorities);
+    //        this.email = email;
+    //        this.credentials = credentials;
+    //    }
+    //    public CustomAuthenticationToken(Collection<? extends GrantedAuthority> authorities) {
+    //        super(authorities);
+    //    }
+    //    @Override
+    //    public Object getCredentials() {
+    //        return this.credentials;
+    //    }
+    //    @Override
+    //    public Object getPrincipal() {
+    //        return this.email;
+    //    }
+    //}
+
     // 로그인 성공 시 실행되는 메소드
     private class LoginSuccessHandler implements AuthenticationSuccessHandler {
         @Override

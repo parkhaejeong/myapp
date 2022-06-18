@@ -34,6 +34,8 @@ dependencies {
     runtimeOnly 'org.springframework.boot:spring-boot-starter-jdbc'
     // thymeleaf
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    // reload
+    compileOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.named('test') {

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="kr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragment/layout}">
+
+
+<div layout:fragment="custom-content" id="CODEWRITE">
+    <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
+    <h4 id="pageTitle" name="pageTitle">코드정보</h4>
+    <div>
+        <button type="button" id="btnList" name="btnList" class="btn btn-primary btn-sm">목록</button>
+        <button type="button" id="btnAdd" name="btnAdd" class="btn btn-primary btn-sm">신규</button>
+        <button type="button" id="btnModify" name="btnModify" class="btn btn-primary btn-sm">수정</button>
+        <button type="button" id="btnDelete" name="btnDelete" class="btn btn-primary btn-sm">삭제</button>
+    </div>
+
+    <section>
+        <div name="wrap" class="wrap">
+            <h6>코드정보</h6>
+            <form id="form" name="form">
+                <div id="codeData" name="codeData">
+                    <div>
+                        <label class="col-sm-1" for="GroupNm">그룹</label>
+                        <input class="col-sm-3" type="text" id="GroupNm" name="GroupNm"
+                               th:value="${code?.GroupNm}">
+                    </div>
+                    <div>
+                        <label class="col-sm-1" for="Code">Code</label>
+                        <input class="col-sm-3" type="text" id="Code" name="Code"
+                               th:value="${code?.Code}">
+                    </div>
+                    <div>
+                        <label class="col-sm-1" for="CodeName">Code값</label>
+                        <input class="col-sm-3" type="text" id="CodeName" name="CodeName"
+                               th:value="${code?.CodeName}">
+                    </div>
+                    <div>
+                        <label class="col-sm-1" for="CodeOptn01">옵션01</label>
+                        <input class="col-sm-3" type="text" id="CodeOptn01" name="CodeOptn01"
+                               th:value="${code?.CodeOptn01}">
+                    </div>
+                    <div>
+                        <label class="col-sm-1" for="CodeOptn02">옵션02</label>
+                        <input class="col-sm-3" type="text" id="CodeOptn02" name="CodeOptn02"
+                               th:value="${code?.CodeOptn02}">
+                    </div>
+                    <div>
+                        <label class="col-sm-1" for="CodeOptn03">옵션03</label>
+                        <input class="col-sm-3" type="text" id="CodeOptn03" name="CodeOptn03"
+                               th:value="${code?.CodeOptn03}">
+                    </div>
+                    <div>
+                        <label class="col-sm-1" for="CodeDesc">설명</label>
+                        <input class="col-sm-3" type="text" id="CodeDesc" name="CodeDesc"
+                               th:value="${code?.CodeDesc}">
+                    </div>
+                    <div>
+                        <label class="col-sm-1" for="Sort">정렬</label>
+                        <input class="col-sm-3" type="text" id="Sort" name="Sort"
+                               th:value="${code?.Sort}">
+                    </div>
+                    <div>
+                        <label class="col-sm-1" for="DelYn">삭제유무</label>
+                        <select class="col-sm-3" id="DelYn" name="DelYn">
+                            <option value="">전체</option>
+                            <option value="1"
+                                    th:selected="${code?.DelYn} eq '1'">삭제</option>
+                            <option value="0"
+                                    th:selected="${code?.DelYn} eq '0'">미삭제</option>
+                        </select>
+                    </div>
+                    <div class="display_none">
+                        <div>
+                            <label class="col-sm-1" for="CreateName">생성일자</label>
+                            <span type="text" id="CreateName" name="CreateName" readonly
+                                  th:text="${code?.CreateName}">생성일자</span>
+                        </div>
+                        <div>
+                            <label class="col-sm-1" for="CreateDate">생성일자</label>
+                            <span type="text" id="CreateDate" name="CreateDate" readonly
+                                  th:text="${code?.CreateDate}">생성일자</span>
+                        </div>
+                        <div>
+                            <label class="col-sm-1" for="CreateUserPid">생성계정</label>
+                            <span type="text" id="CreateUserPid" name="CreateUserPid" readonly
+                                  th:text="${code?.CreateUserPid}">생성계정</span>
+                        </div>
+                        <div>
+                            <label class="col-sm-1" for="ModifyName">수정계정</label>
+                            <span type="text" id="ModifyName" name="ModifyName" readonly
+                                  th:text="${code?.ModifyName}">수정계정</span>
+                        </div>
+                        <div>
+                            <label class="col-sm-1" for="ModifyDate">수정일자</label>
+                            <span type="text" id="ModifyDate" name="ModifyDate" readonly
+                                  th:text="${code?.ModifyDate}">수정일자</span>
+                        </div>
+                        <div>
+                            <label class="col-sm-1" for="ModifyUserPid">수정계정</label>
+                            <span type="text" id="ModifyUserPid" name="ModifyUserPid" readonly
+                                  th:text="${code?.ModifyUserPid}">수정계정</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script type="text/javascript" th:inline="javascript">
+        function setUI(param1) {
+            if (param1 === 'modify') {
+                CODEWRITE.container.find('[name=btnDelete], [name=btnModify], [name=onlyModify]').show();
+                CODEWRITE.container.find('[name=btnAdd]').hide();
+                CODEWRITE.container.find('[name=pageTitle]').html("코드수정");
+                CODEWRITE.container.find('[name=GroupNm], [name=Code]').attr('readonly', true);
+                CODEWRITE.container.find('[name="onlyModify"]').removeClass('display_none');
+            } else {
+                CODEWRITE.container.find('[name=pageTitle]').html("코드등록");
+                CODEWRITE.container.find('[name=btnDelete], [name=btnModify], [name=onlyModify]').hide();
+                CODEWRITE.container.find('[name=btnAdd]').show();
+                CODEWRITE.container.find('[name="onlyModify"]').addClass('display_none');
+            }
+        }
+
+        let setCodeAction = function (eventNm) {
+
+            console.log(eventNm.name);
+
+            let url;
+            if (eventNm.name === 'btnAdd') {
+                url = '/admin/code/codeWrite/setCodeAdd';
+            } else if (eventNm.name === 'btnModify') {
+                url = '/admin/code/codeWrite/setCodeModify';
+            } else if (eventNm.name === 'btnDelete') {
+                url = '/admin/code/codeWrite/setCodeDelete';
+            }
+            let paramData = CODEWRITE.container.find('form').serializeObject();
+            COM.callAjax(url, 'POST', 'html', paramData,
+                function (result, textStatus, data) {
+                    console.log('success');
+                    goList();
+                }, function (xhr, errorName, error) {
+                    console.log('error');
+                }, function () {
+                    // complete
+                });
+        };
+
+        let goList = function () {
+            //location.href = '/admin/code/codeList';
+            location.href = /*[[ @{/admin/code/codeList} ]]*/;
+        }
+
+        const CODEWRITE = {
+
+            container:null,
+
+            init:function(){
+                this.container = COM.getContainer('#CODEWRITE'); //this.getContainer('#CODELIST');
+
+                let GroupNm = $.getUrlVar("GroupNm");
+                let Code = $.getUrlVar("Code");
+                let pageMode = COM.modeCheck();
+
+                setUI(pageMode);
+
+                if (pageMode === 'modify') {
+                    if (COM.isNullOrEmpty(GroupNm) || COM.isNullOrEmpty(Code)) {
+                        alert('올바른 접근이 아닙니다. 리스트 페이지로 이동합니다.');
+                        goList();
+                    } else {
+                        let url = '/admin/code/codeWrite/getCode';
+                        let paramData = CODEWRITE.container.find('form').serializeObject();
+                        COM.callAjax(url, 'POST', 'html', {
+                                GroupNm:GroupNm,
+                                Code:Code,
+                            },
+                            function (result, textStatus, data) {
+                                CODEWRITE.container.find('#codeData').replaceWith(result);
+                            }, function (xhr, errorName, error) {
+                                CODEWRITE.container.find('#codeData').replaceWith("<div>Ajax Error</div>");
+                            }, function () {
+                                //
+                            });
+                    }
+                }
+
+                //$(document).ajaxStop(function(){
+                //    setUI(pageMode);
+                //});
+            },
+
+            registerEventHandler:function(){
+                // 목록
+                CODEWRITE.container.find('button[name=btnList]').on('click', function (e) {
+                    goList();
+                    e.preventDefault();
+                });
+
+                // 신규, 수정, 삭제
+                //CODEWRITE.container.find('section').on('click', 'div button[name=btnAdd], div button[name=btnModify], div button[name=btnDelete]' , function (e) {
+                CODEWRITE.container.find('button[name=btnAdd], div button[name=btnModify], div button[name=btnDelete]').on('click',function (e) {
+                    setCodeAction(this);
+                    e.preventDefault();
+                });
+            }
+        }
+        jQuery(function($){
+            CODEWRITE.init();
+            CODEWRITE.registerEventHandler();
+        });
+    </script>
+</div>
+</html>

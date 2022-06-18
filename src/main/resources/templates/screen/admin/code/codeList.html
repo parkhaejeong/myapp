@@ -9,30 +9,183 @@
 
 <div layout:fragment="custom-content" id="CODELIST">
     <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
+    <h4 id="pageTitle" name="pageTitle">코드리스트</h4>
     <div>
-        <button type="button" class="btn btn-primary btn-sm">목록</button>
-        <button type="button" class="btn btn-primary btn-sm">신규</button>
+        <button type="button" id="btnAdd" name="btnAdd" class="btn btn-primary btn-sm">신규</button>
     </div>
-    <h4>코드리스트</h4>
+    <section>
+        <div name="wrap" class="wrap">
+            <h6>검색조건</h6>
+            <form>
+                <div class="row">
+                    <label class="col-sm-1" for="Code">그룹</label>
+                    <input class="col-sm-3" type="text"
+                           id="Code" name="Code" value=""
+                           placeholder="입력">
+                </div>
+                <div class="row">
+                    <label class="col-sm-1" for="CodeName">코드값</label>
+                    <input class="col-sm-3" type="text"
+                           id="CodeName" name="CodeName" value=""
+                           placeholder="입력">
+                </div>
+                <div class="row">
+                    <label class="col-sm-1" for="DelYn">삭제유무</label>
+                    <select class="col-sm-3" id="DelYn" name="DelYn">
+                        <option value="">전체</option>
+                        <option value="1">삭제</option>
+                        <option value="0">미삭제</option>
+                    </select>
+                </div>
+            </form>
+            <div>
+                <button type="button" id="btnSearch" name="btnSearch" class="btn btn-primary btn-sm">조회</button>
+            </div>
+        </div>
 
-    <script type="text/javascript" th:inline="javascript">
-        let CODELIST = (function () {
-            let $container = $("#CODELIST");
+        <div name="wrap" class="wrap">
+            <h6>검색결과</h6>
+            <table class="table table-hover table-bordered" id="table" name="table">
+                <thead>
+                <tr>
+                    <td>순번</td>
+                    <td>그룹</td>
+                    <td>코드</td>
+                    <td>코드값</td>
+                    <td>옵션01</td>
+                    <td>옵션02</td>
+                    <td>옵션03</td>
+                    <td>설명</td>
+                    <td>정렬</td>
+                    <td>삭제여부</td>
+                    <td>생성자</td>
+                    <td>생성일자</td>
+                    <td>생성계정</td>
+                    <td>수정자</td>
+                    <td>수정일자</td>
+                    <td>수정계정</td>
+                    <td>수정</td>
+                    <td>삭제</td>
+                </tr>
+                </thead>
+                <tbody id="codeListData" name="codeListData">
+                <tr th:if="${#lists.size(codeList) > 0}"
+                    th:each="code, idx : ${codeList}"
+                    th:data-groupnm="${code?.GroupNm}"
+                    th:data-code="${code?.Code}"
+                    th:classappend="${code?.DelYn} == '1' ? strikeThrough">
+                    <td th:text="${code.RowNum}">순번</td>
+                    <td th:text="${code.GroupNm}">그룹</td>
+                    <td th:text="${code.Code}">코드</td>
+                    <td th:text="${code.CodeName}">코드값</td>
+                    <td th:text="${code.CodeOptn01}">옵션01</td>
+                    <td th:text="${code.CodeOptn02}">옵션02</td>
+                    <td th:text="${code.CodeOptn03}">옵션03</td>
+                    <td th:text="${code.CodeDesc}">설명</td>
+                    <td th:text="${code.Sort}">정렬</td>
+                    <td th:text="${code.Del}">삭제여부</td>
+                    <td th:text="${code.CreateName}">생성자</td>
+                    <td th:text="${code.CreateDate}">생성일자</td>
+                    <td th:text="${code.CreateUserPid}">생성계정</td>
+                    <td th:text="${code.ModifyName}">수정자</td>
+                    <td th:text="${code.ModifyDate}">수정일자</td>
+                    <td th:text="${code.ModifyUserPid}">수정계정</td>
+                    <td><button name="btnModify"> 수정 </button></td>
+                    <td><button name="btnDelete"> 삭제 </button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-            let init = function () {
-            };
+    <script defer type="text/javascript" th:inline="javascript">
 
-            let registerEventHandler = function () {
-            };
+        let getCodeList = function () {
+            let paramData = CODELIST.container.find('form').serializeObject();
+            COM.callAjax('/admin/code/codeList/getCodeList', 'POST', 'html', paramData,
+                function (result, textStatus, data) {
+                    CODELIST.container.find('#codeListData').replaceWith(result);
+                }, function (xhr, errorName, error) {
+                    CODELIST.container.find('#codeListData').replaceWith("<tr><td colspan='19'>Ajax Error<td></tr>");
+                }, function () {
+                    // complete
+                });
+        };
 
-            return {
-                init: function () {
-                    init();
-                    registerEventHandler();
-                }
-            };
-        })();
-        CODELIST.init();
+        let setCodeDelete = function (param1, param2) {
+            COM.callAjax('/admin/code/codeList/setCodeDelete', 'POST', 'html', {
+                    GroupNm: param1,
+                    Code: param2,
+                },
+                function (result, textStatus, data) {
+                    console.log('success');
+                    //container.find('#codeListData').replaceWith(result);
+                }, function (xhr, errorName, error) {
+                    console.log('error');
+                    //container.find('#codeListData').replaceWith("<tr><td colspan='16'>Ajax Error<td></tr>");
+                }, function () {
+                    // complete
+                });
+        };
+
+        let CODELIST = {
+
+            container:null,
+            // container: $('#CODELIST'),
+
+            init:function(){
+                //this.container = this.getContainer('#CODELIST');
+                this.container = COM.getContainer('#CODELIST');
+                getCodeList();
+            },
+            // getContainer:function(selector){
+            //    if( typeof jQuery == 'function' && typeof this.container !== 'object' ){
+            //        this.container = $(selector);
+            //    }
+            //    return this.container;
+            // },
+
+            registerEventHandler:function(){
+                // 신규버튼
+                CODELIST.container.find('button[name=btnAdd]').on('click', function (e) {
+                    e.preventDefault();
+                    location.href = /*[[ @{/admin/code/codeWrite} ]]*/;
+                });
+                // 조회버튼
+                //CODELIST.container.on('click', 'button[name=btnSearch]' , function (e) {
+                CODELIST.container.find('section').on('click', 'button[name=btnSearch]' , function (e) {
+                    e.preventDefault();
+                    getCodeList();
+                });
+                // 수정버튼
+                CODELIST.container.find('section').on('click', 'tbody tr button[name=btnModify]' , function (e) {
+                    e.preventDefault();
+                    let param1 = $(this).parents('tr').data('groupnm');
+                    let param2 = $(this).parents('tr').data('code');
+                    if (COM.isNullOrEmpty(param1) || COM.isNullOrEmpty(param2)) {
+                        alert('올바른 접근이 아닙니다.');
+                    } else {
+                        location.href = '/admin/code/codeWrite?GroupNm=' + param1 + '&Code=' + param2;
+                    }
+                });
+                // 삭제버튼
+                CODELIST.container.find('section').on('click', 'tbody tr button[name=btnDelete]' , function (e) {
+                    e.preventDefault();
+                    let param1 = $(this).parents('tr').data('groupnm');
+                    let param2 = $(this).parents('tr').data('code');
+                    if (COM.isNullOrEmpty(param1) || COM.isNullOrEmpty(param2)) {
+                        alert('올바른 접근이 아닙니다.');
+                    } else {
+                        setCodeDelete(param1,param2);
+                    }
+                });
+            }
+        };
+
+        jQuery(function($){
+            CODELIST.init();
+            CODELIST.registerEventHandler();
+        });
     </script>
 </div>
 </html>

@@ -18,4 +18,14 @@ public class CtgrController {
             return "/screen/index";
         }
     }
+    
+    // 카테고리 리스트
+
+    // 카테고리 
+
+    // 수정
+
+    // 등록
+
+    // 삭제
 }

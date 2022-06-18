@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.myapp.mapper.admin.CodeMpp">
+    <select id="getCodeList" parameterType="com.study.myapp.model.admin.CodeModel" resultType="com.study.myapp.model.admin.CodeModel">
+        SELECT
+        @RowCount := @RowCount + 1 AS RowNum
+        ,CD.GroupNm
+        ,CD.Code
+        ,CD.CodeName
+        ,CD.CodeOptn01
+        ,CD.CodeOptn02
+        ,CD.CodeOptn03
+        ,CD.CodeDesc
+        ,CD.Sort
+        ,CD.DelYn
+        ,case CD.DelYn when '0' then '삭제' when '1' then '미삭제' else '-' end as Del
+        ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateName
+        ,CD.CreateDate
+        ,CD.CreateUserPid
+        ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.ModifyUserPid) as ModifyName
+        ,CD.ModifyDate
+        ,CD.ModifyUserPid
+        FROM myapp.code as CD, (SELECT @RowCount := 0) temp
+        <where>
+            <if test="GroupNm != '' and GroupNm != null">
+                AND CD.GroupNm LIKE CONCAT('%', #{GroupNm}, '%')
+            </if>
+            <if test="CodeName != '' and CodeName != null">
+                AND CD.CodeName LIKE CONCAT('%', #{CodeName}, '%')
+            </if>
+            <if test="CodeDesc != '' and CodeDesc != null">
+                AND CD.CodeDesc LIKE CONCAT('%', #{CodeDesc}, '%')
+            </if>
+            <if test="DelYn != '' and DelYn != null">
+                AND CD.DelYn = #{DelYn}
+            </if>
+        </where>
+        ORDER BY RowNum desc ;
+    </select>
+    <select id="getCode" parameterType="com.study.myapp.model.admin.CodeModel" resultType="com.study.myapp.model.admin.CodeModel">
+        SELECT
+        @RowCount := @RowCount + 1 AS RowNum
+        ,CD.GroupNm
+        ,CD.Code
+        ,CD.CodeName
+        ,CD.CodeOptn01
+        ,CD.CodeOptn02
+        ,CD.CodeOptn03
+        ,CD.CodeDesc
+        ,CD.Sort
+        ,CD.DelYn
+        ,case CD.DelYn when '0' then '삭제' when '1' then '미삭제' else '-' end as Del
+        ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateName
+        ,CD.CreateDate
+        ,CD.CreateUserPid
+        ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.ModifyUserPid) as ModifyName
+        ,CD.ModifyDate
+        ,CD.ModifyUserPid
+        FROM myapp.code as CD, (SELECT @RowCount := 0) temp
+        WHERE CD.GroupNm = #{GroupNm}
+        AND CD.Code = #{Code}
+    </select>
+    <insert id="setCodeAdd" parameterType="com.study.myapp.model.admin.CodeModel">
+        INSERT
+        INTO CODE
+        (
+        GroupNm
+        ,Code
+        ,CodeName
+        ,CodeOptn01
+        ,CodeOptn02
+        ,CodeOptn03
+        ,CodeDesc
+        ,Sort
+        ,DelYn
+        ,CreateDate
+        ,CreateUserPid
+        )
+        VALUES
+            (
+            GroupNm = #{GroupNm}
+            ,Code = #{Code}
+            ,CodeName = #{CodeName}
+            ,CodeOptn01 = #{CodeOptn01}
+            ,CodeOptn02 = #{CodeOptn02}
+            ,CodeOptn03 = #{CodeOptn03}
+            ,CodeDesc = #{CodeDesc}
+            ,Sort = ${Sort}
+            ,DelYn = #{DelYn}
+            ,CreateDate = NOW()
+            ,CreateUserPid = ${CreateUserPid}
+            );
+    </insert>
+    <update id="setCodeModify" parameterType="com.study.myapp.model.admin.CodeModel">
+        UPDATE CODE
+        SET
+          CodeName = #{CodeName}
+          ,CodeOptn01 = #{CodeOptn01}
+          ,CodeOptn02 = #{CodeOptn02}
+          ,CodeOptn03 = #{CodeOptn03}
+          ,CodeDesc = #{CodeDesc}
+          ,Sort = ${Sort}
+          ,DelYn = #{DelYn}
+          ,ModifyDate = NOW()
+          ,ModifyUserPid = ${ModifyUserPid}
+        WHERE GroupNm = #{GroupNm}
+          AND Code = #{Code}
+    </update>
+    <update id="setCodeDelete" parameterType="com.study.myapp.model.admin.CodeModel">
+        UPDATE CODE
+        SET
+          DelYn = #{DelYn}
+          ,ModifyDate = NOW()
+          ,ModifyUserPid = ${ModifyUserPid}
+        WHERE GroupNm = #{GroupNm}
+          AND Code = #{Code}
+    </update>
+</mapper>

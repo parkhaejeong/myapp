@@ -9,29 +9,53 @@
 
 <div layout:fragment="custom-content" id="CTGRLIST">
     <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
-    <div>
-        <button type="button" class="btn btn-primary btn-sm">목록</button>
-        <button type="button" class="btn btn-primary btn-sm">신규</button>
-    </div>
-    <h4>카테고리리스트</h4>
+
+    <section>
+        <h4>카테고리리스트</h4>
+        <div>
+            <button id="btnList" name="btnList" type="button" class="btn btn-primary btn-sm">목록</button>
+            <button id="btnAdd" name="btnAdd" type="button" class="btn btn-primary btn-sm">신규</button>
+            <button id="btnSearch" name="btnSearch" type="button" class="btn btn-primary btn-sm">조회</button>
+        </div>
+
+        <h6>검색조건</h6>
+        <form>
+        </form>
+        <h6>검색결과</h6>
+        <table>
+            <thead>
+                <tr>
+                    <td>순번</td>
+                    <td>일련번호</td>
+                    <td>카테고리명</td>
+                    <td>카테고리단계</td>
+                    <td>컨텐츠디스플레이타입</td>
+                    <td>컨텐츠권한체크여부</td>
+                    <td>사용여부</td>
+                    <td>삭제여부</td>
+                    <td>등록일자</td>
+                    <td>등록계정</td>
+                    <td>수정일자</td>
+                    <td>수정계정</td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </section>
 
     <script type="text/javascript" th:inline="javascript">
-        let CTGRLIST = (function () {
-            let $container = $("#CTGRLIST");
+        const CTGRLIST = {
+            container:$('#CTGRLIST'),
 
-            let init = function () {
-            };
+            init:function(){
 
-            let registerEventHandler = function () {
-            };
+            },
 
-            return {
-                init: function () {
-                    init();
-                    registerEventHandler();
-                }
-            };
-        })();
+            registerEventHandler:function(){
+
+            }
+        }
         CTGRLIST.init();
     </script>
 </div>
