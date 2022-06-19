@@ -18,6 +18,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -48,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //custom
 //    @Autowired
 //    private UserService userService;
+//
 //    @Bean // 로그인 성공 시 실행되는 메소드
 //    public AuthenticationSuccessHandler successHandlerHandler() {
 //        return new LoginSuccessHandler();
@@ -72,13 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/css/**","/font/**","/image/**","/js/**","/lib/**","/vendor/**","/error");
-        //web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
-
-    //@Override
-    //public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    //    registry.addResourceHandler("/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS);
-    //}
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -100,17 +96,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/signAccess")//성공시이동될페이지URL, //custom 사용 시 주석
                 .usernameParameter("UserId")  // view form 태그 내에 로그인 할 id 에 맵핑되는 name ( form 의 name )
                 .passwordParameter("UserPswd")  // view form 태그 내에 로그인 할 password 에 맵핑되는 name ( form 의 name )
-                //.successHandler(successHandlerHandler()) // 로그인 성공시 실행되는 메소드//custom
-                //.failureHandler(failureHandlerHandler()) // 로그인 실패시 실행되는 메소드//custom
+//                .successHandler(successHandlerHandler()) // 로그인 성공시 실행되는 메소드//custom
+//                .failureHandler(failureHandlerHandler()) // 로그인 실패시 실행되는 메소드//custom
 
                 .and()
                 .rememberMe()
                 .key("uniqueAndSecret")
                 .rememberMeParameter("remember-Me")
                 .tokenValiditySeconds(86400 * 30)
-                //.userDetailsService(userService) //custom
-                ////.authenticationSuccessHandler(loginSuccessHandler())
-
+//                .userDetailsService(userService) //custom
+//                .authenticationSuccessHandler(loginSuccessHandler())
 
                 .and()
                 .logout() // 로그아웃 설정
@@ -119,9 +114,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true) // 세션 clear
                 //.and()
                 //.exceptionHandling().accessDeniedPage("error403");
-
                 ;
     }
+
 //custom
 //    // 로그인 시 실행되는 메소드
 //    private class LoginAuthenticationProvider implements AuthenticationProvider {
@@ -131,8 +126,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //
 //        private final UserService userService;
 //        private final BCryptPasswordEncoder passwordEncoder;
-//        public LoginAuthenticationProvider(UserService userDetailsService, BCryptPasswordEncoder passwordEncoder) {
-//            this.userService = userDetailsService;
+//        public LoginAuthenticationProvider(UserService userService, BCryptPasswordEncoder passwordEncoder) {
+//            this.userService = userService;
 //            this.passwordEncoder = passwordEncoder;
 //        }
 //
@@ -141,7 +136,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            String userid = authentication.getName(); //(String)authentication.getPrincipal();
 //            String password = (String)authentication.getCredentials();
 //
-//            //UserDetails user = userService.loadUserByUsername(userid);
 //            UserDetails user = userService.loadUserByUsername(userid);
 //            if (user == null) {
 //                throw new BadCredentialsException("username is not found. username=" + userid);
@@ -152,7 +146,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            }
 //
 //            UsernamePasswordAuthenticationToken authenticationToken
-//                    = new UsernamePasswordAuthenticationToken(userid,password,user.getAuthorities());
+////                    = new UsernamePasswordAuthenticationToken(userid,password,user.getAuthorities());
+//                    = new UsernamePasswordAuthenticationToken(user,authentication.getCredentials(),user.getAuthorities());
 //
 //            return authenticationToken;
 //
