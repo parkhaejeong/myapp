@@ -15,12 +15,14 @@
         ,CD.Sort
         ,CD.DelYn
         ,case CD.DelYn when '1' then '삭제' when '0' then '미삭제' else '-' end as Del
-        ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateName
         ,CD.CreateDate
         ,CD.CreateUserPid
-        ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.ModifyUserPid) as ModifyName
+        ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateName
+        ,(select UI.UserId from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateUserId
         ,CD.ModifyDate
         ,CD.ModifyUserPid
+        ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.ModifyUserPid) as ModifyName
+        ,(select UI.UserId from myapp.userinfo as UI where UI.UserPid = CD.ModifyUserPid) as ModifyUserId
         FROM myapp.code as CD, (SELECT @RowCount := 0) temp
         <where>
             <if test="GroupNm != '' and GroupNm != null">
@@ -52,9 +54,11 @@
         ,CD.DelYn
         ,case CD.DelYn when '1' then '삭제' when '0' then '미삭제' else '-' end as Del
         ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateName
+        ,(select UI.UserId from myapp.userinfo as UI where UI.UserPid = CD.CreateUserPid) as CreateUserId
         ,CD.CreateDate
         ,CD.CreateUserPid
         ,(select UI.UserName from myapp.userinfo as UI where UI.UserPid = CD.ModifyUserPid) as ModifyName
+        ,(select UI.UserId from myapp.userinfo as UI where UI.UserPid = CD.ModifyUserPid) as ModifyUserId
         ,CD.ModifyDate
         ,CD.ModifyUserPid
         FROM myapp.code as CD, (SELECT @RowCount := 0) temp

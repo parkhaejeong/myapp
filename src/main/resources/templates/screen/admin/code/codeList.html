@@ -7,111 +7,131 @@
       layout:decorate="~{fragment/layout}">
 
 
-<div layout:fragment="custom-content" id="CODELIST">
+<div layout:fragment="custom-content" id="CODELIST" >
     <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
-    <h4 id="pageTitle" name="pageTitle">코드리스트</h4>
-    <div>
-        <button type="button" id="btnAdd" name="btnAdd" class="btn btn-primary btn-sm">신규</button>
+
+    <div class="titleWarp">
+        <h4 id="pageTitle" name="pageTitle"
+            class="titleName">코드리스트</h4>
+
+        <div class="titleButton">
+            <button type="button"
+                    id="btnAdd" name="btnAdd"
+                    class="btn btn-primary btn-sm">신규</button>
+        </div>
     </div>
+
     <section>
         <div name="wrap" class="wrap">
             <h6>검색조건</h6>
-            <form>
-                <div class="row">
-                    <label class="col-sm-1" for="Code">그룹</label>
-                    <input class="col-sm-3" type="text"
-                           id="Code" name="Code" value=""
-                           placeholder="입력">
-                </div>
-                <div class="row">
-                    <label class="col-sm-1" for="CodeName">코드값</label>
-                    <input class="col-sm-3" type="text"
-                           id="CodeName" name="CodeName" value=""
-                           placeholder="입력">
-                </div>
-                <div class="row">
-                    <label class="col-sm-1" for="DelYn">삭제유무</label>
-                    <select class="col-sm-3" id="DelYn" name="DelYn">
-                        <option value="">전체</option>
-                        <option value="1">삭제</option>
-                        <option value="0">미삭제</option>
-                    </select>
-                </div>
-            </form>
             <div>
-                <button type="button" id="btnSearch" name="btnSearch" class="btn btn-primary btn-sm">조회</button>
+                <form>
+                    <div class="row">
+                        <label class="col-sm-1" for="Code">그룹</label>
+                        <input class="col-sm-3" type="text"
+                               id="Code" name="Code" value=""
+                               placeholder="입력">
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-1" for="CodeName">코드값</label>
+                        <input class="col-sm-3" type="text"
+                               id="CodeName" name="CodeName" value=""
+                               placeholder="입력">
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-1" for="DelYn">삭제유무</label>
+                        <select class="col-sm-3" id="DelYn" name="DelYn">
+                            <option value="">전체</option>
+                            <option value="1">삭제</option>
+                            <option value="0">미삭제</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <button type="button"
+                        id="btnSearch" name="btnSearch"
+                        class="btn btn-primary btn-sm">조회</button>
             </div>
         </div>
 
         <div name="wrap" class="wrap">
             <h6>검색결과</h6>
-            <table class="table table-hover table-bordered" id="table" name="table">
-                <thead>
-                <tr>
-                    <td>순번</td>
-                    <td>그룹</td>
-                    <td>코드</td>
-                    <td>코드값</td>
-                    <td>옵션01</td>
-                    <td>옵션02</td>
-                    <td>옵션03</td>
-                    <td>설명</td>
-                    <td>정렬</td>
-                    <td>삭제여부</td>
-                    <td>생성자</td>
-                    <td>생성일자</td>
-                    <td>생성계정</td>
-                    <td>수정자</td>
-                    <td>수정일자</td>
-                    <td>수정계정</td>
-                    <td>수정</td>
-                    <td>삭제</td>
-                </tr>
-                </thead>
-                <tbody id="codeListData" name="codeListData">
-                <tr th:if="${#lists.size(codeList) > 0}"
-                    th:each="code, idx : ${codeList}"
-                    th:data-groupnm="${code?.GroupNm}"
-                    th:data-code="${code?.Code}"
-                    th:data-delyn="${code?.DelYn}"
-                    th:classappend="${code?.DelYn} == '1' ? strikeThrough">
-                    <td th:text="${code.RowNum}">순번</td>
-                    <td th:text="${code.GroupNm}">그룹</td>
-                    <td th:text="${code.Code}">코드</td>
-                    <td th:text="${code.CodeName}">코드값</td>
-                    <td th:text="${code.CodeOptn01}">옵션01</td>
-                    <td th:text="${code.CodeOptn02}">옵션02</td>
-                    <td th:text="${code.CodeOptn03}">옵션03</td>
-                    <td th:text="${code.CodeDesc}">설명</td>
-                    <td th:text="${code.Sort}">정렬</td>
-                    <td th:text="${code.Del}">삭제여부</td>
-                    <td th:text="${code.CreateName}">생성자</td>
-                    <td th:text="${code.CreateDate}">생성일자</td>
-                    <td th:text="${code.CreateUserPid}">생성계정</td>
-                    <td th:text="${code.ModifyName}">수정자</td>
-                    <td th:text="${code.ModifyDate}">수정일자</td>
-                    <td th:text="${code.ModifyUserPid}">수정계정</td>
-                    <td><button name="btnModify"> 수정 </button></td>
-                    <td><button name="btnDelete"> 삭제 </button></td>
-                </tr>
-                </tbody>
-            </table>
+            <div id="CommData" name="CommData">
+                <div id="CommMsgData" name="CommMsgData" style="color: #736464" th:if="${msg != null}">
+                    <span name="Status" th:text="${msg.Status}"></span>
+                    <span name="Title" th:text="${msg.Title}"></span>
+                    <span name="Message" th:text="${msg.Message}"></span>
+                </div>
+                <table class="table table-hover table-bordered" id="table" name="table">
+                    <thead>
+                    <tr>
+                        <td>순번</td>
+                        <td>그룹</td>
+                        <td>코드</td>
+                        <td>코드값</td>
+                        <td>옵션01</td>
+                        <td>옵션02</td>
+                        <td>옵션03</td>
+                        <td>설명</td>
+                        <td>정렬</td>
+                        <td>삭제여부</td>
+                        <td>생성자</td>
+                        <td>생성일자</td>
+                        <td>생성계정</td>
+                        <td>수정자</td>
+                        <td>수정일자</td>
+                        <td>수정계정</td>
+                        <td>수정</td>
+                        <td>삭제</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${codeList != null && #lists.size(codeList) > 0}"
+                        th:each="code, idx : ${codeList}"
+                        th:data-groupnm="${code?.GroupNm}"
+                        th:data-code="${code?.Code}"
+                        th:data-delyn="${code?.DelYn}"
+                        th:classappend="${code?.DelYn} == '1' ? strikeThrough">
+                        <td th:text="${code.RowNum}">순번</td>
+                        <td th:text="${code.GroupNm}">그룹</td>
+                        <td th:text="${code.Code}">코드</td>
+                        <td th:text="${code.CodeName}">코드값</td>
+                        <td th:text="${code.CodeOptn01}">옵션01</td>
+                        <td th:text="${code.CodeOptn02}">옵션02</td>
+                        <td th:text="${code.CodeOptn03}">옵션03</td>
+                        <td th:text="${code.CodeDesc}">설명</td>
+                        <td th:text="${code.Sort}">정렬</td>
+                        <td th:text="${code.Del}">삭제여부</td>
+                        <td th:text="${code.CreateName}">생성자</td>
+                        <td th:text="${code.CreateDate}">생성일자</td>
+                        <td th:text="${code.CreateUserId}">생성계정</td>
+                        <td th:text="${code.ModifyName}">수정자</td>
+                        <td th:text="${code.ModifyDate}">수정일자</td>
+                        <td th:text="${code.ModifyUserId}">수정계정</td>
+                        <td><button name="btnModify" class="btn btn-secondary btn-sm"> 수정 </button></td>
+                        <td><button name="btnDelete" class="btn btn-secondary btn-sm"> 삭제 </button></td>
+                    </tr>
+                    <tr th:unless="${codeList != null && #lists.size(codeList) > 0}">
+                        <td colspan='18'>no Data<td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
-    <script defer type="text/javascript" th:inline="javascript">
-
+    <script defer th:inline="javascript">
         let getCodeList = function () {
             let paramData = CODELIST.container.find('form').serializeObject();
             COM.callAjax('/admin/code/codeList/getCodeList', 'POST', 'html', paramData,
                 function (result, textStatus, data) {
-                    //console.log('getCodeListSuccess');
-                    CODELIST.container.find('#codeListData').replaceWith(result);
+                    CODELIST.container.find('#CommData').replaceWith(result);
                 }, function (xhr, errorName, error) {
-                    //console.log('getCodeListError');
-                    CODELIST.container.find('#codeListData').replaceWith("<tr><td colspan='19'>Ajax Error<td></tr>");
+                    CODELIST.container.find('#CommData').replaceWith("<div>Ajax Error</div>");
                 }, function () {
                     // complete
+                    // console.log(CODELIST.container.find('table tbody tr').data('groupnm'));
                 });
         };
 
@@ -119,14 +139,12 @@
             COM.callAjax('/admin/code/codeList/setCodeDelete', 'POST', 'html', {
                     GroupNm: param1,
                     Code: param2,
-                    DelYn : param3 === '1' ? '0' : '1'
+                    DelYn : param3 === 1 ? 0 : 1
                 },
                 function (result, textStatus, data) {
-                    console.log('DeleteSuccess');
-                    //container.find('#codeListData').replaceWith(result);
+                    CODELIST.container.find('#CommMsgData').replaceWith(result);
                 }, function (xhr, errorName, error) {
-                    console.log('error');
-                    //container.find('#codeListData').replaceWith("<tr><td colspan='16'>Ajax Error<td></tr>");
+                    CODELIST.container.find('#CommMsgData').replaceWith("<div>Ajax Error</div>");
                 }, function () {
                     getCodeList();
                 });
@@ -156,8 +174,7 @@
                     location.href = /*[[ @{/admin/code/codeWrite} ]]*/;
                 });
                 // 조회버튼
-                //CODELIST.container.on('click', 'button[name=btnSearch]' , function (e) {
-                CODELIST.container.find('section').on('click', 'button[name=btnSearch]' , function (e) {
+                CODELIST.container.find('button[name=btnSearch]').on('click', function (e) {
                     e.preventDefault();
                     getCodeList();
                 });
@@ -178,7 +195,7 @@
                     let param1 = $(this).parents('tr').data('groupnm');
                     let param2 = $(this).parents('tr').data('code');
                     let param3 = $(this).parents('tr').data('delyn');
-                    if (COM.isNullOrEmpty(param1) || COM.isNullOrEmpty(param2)) {
+                    if (COM.isNullOrEmpty(param1) || COM.isNullOrEmpty(param2) || COM.isNullOrEmpty(param3)) {
                         alert('올바른 접근이 아닙니다.');
                     } else {
                         setCodeDelete(param1,param2,param3);
@@ -194,3 +211,4 @@
     </script>
 </div>
 </html>
+

@@ -1,5 +1,6 @@
 package com.study.myapp.model.admin;
 
+import com.study.myapp.model.comm.MessageModel;
 import lombok.Data;
 
 @Data
@@ -18,7 +19,10 @@ public class CodeModel {
     private String CreateName;
     private String CreateDate;
     private Integer CreateUserPid;
+    private String CreateUserId;
     private String ModifyName;
     private String ModifyDate;
     private Integer ModifyUserPid;
+    private String ModifyUserId;
+    //private MessageModel messageModel;
 }
