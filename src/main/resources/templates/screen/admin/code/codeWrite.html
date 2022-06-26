@@ -9,12 +9,12 @@
 
 <div layout:fragment="custom-content" id="CODEWRITE">
     <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
-    <h4 id="pageTitle" name="pageTitle" >코드수정</h4>
-    <div>
-        <button type="button" id="btnList" name="btnList" class="btn btn-primary btn-sm">목록</button>
-        <button type="button" id="btnAdd" name="btnAdd" class="btn btn-primary btn-sm">신규</button>
-        <button type="button" id="btnModify" name="btnModify" class="btn btn-primary btn-sm">수정</button>
-        <button type="button" id="btnDelete" name="btnDelete" class="btn btn-primary btn-sm">삭제</button>
+    <h4 id="pageTitle" name="pageTitle" ></h4>
+    <div >
+        <button type="button" id="btnList" name="btnList" class="display_none btn btn-primary btn-sm">목록</button>
+        <button type="button" id="btnAdd" name="btnAdd" class="display_none btn btn-primary btn-sm">신규</button>
+        <button type="button" id="btnModify" name="btnModify" class="display_none btn btn-primary btn-sm">수정</button>
+        <button type="button" id="btnDelete" name="btnDelete" class="display_none btn btn-primary btn-sm">삭제</button>
     </div>
 
     <section>
@@ -118,15 +118,19 @@
     <script type="text/javascript" th:inline="javascript">
         function setUI(param1) {
             if (param1 === 'modify') {
-                CODEWRITE.container.find('[name=btnDelete], [name=btnModify], [name=onlyModify]').show();
-                CODEWRITE.container.find('[name=btnAdd]').hide();
                 CODEWRITE.container.find('[name=pageTitle]').html("코드수정");
+                // CODEWRITE.container.find('[name=btnDelete], [name=btnModify], [name=onlyModify]').show();
+                // CODEWRITE.container.find('[name=btnAdd]').hide();
+                CODEWRITE.container.find('[name=btnDelete], [name=btnModify], [name=btnList]').removeClass('display_none');
+                CODEWRITE.container.find('[name=btnAdd]').addClass('display_none');
                 CODEWRITE.container.find('[name=GroupNm], [name=Code]').attr('readonly', true);
                 CODEWRITE.container.find('[name="onlyModify"]').removeClass('display_none');
             } else {
                 CODEWRITE.container.find('[name=pageTitle]').html("코드등록");
-                CODEWRITE.container.find('[name=btnDelete], [name=btnModify], [name=onlyModify]').hide();
-                CODEWRITE.container.find('[name=btnAdd]').show();
+                // CODEWRITE.container.find('[name=btnDelete], [name=btnModify], [name=onlyModify]').hide();
+                // CODEWRITE.container.find('[name=btnAdd], [name=onlyModify]').show();
+                CODEWRITE.container.find('[name=btnDelete], [name=btnModify]').addClass('display_none');
+                CODEWRITE.container.find('[name=btnAdd], [name=btnList]').removeClass('display_none');
                 CODEWRITE.container.find('[name="onlyModify"]').addClass('display_none');
             }
         }
