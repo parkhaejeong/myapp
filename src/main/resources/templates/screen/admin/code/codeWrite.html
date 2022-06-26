@@ -9,7 +9,7 @@
 
 <div layout:fragment="custom-content" id="CODEWRITE">
     <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
-    <h4 id="pageTitle" name="pageTitle">코드정보</h4>
+    <h4 id="pageTitle" name="pageTitle" >코드수정</h4>
     <div>
         <button type="button" id="btnList" name="btnList" class="btn btn-primary btn-sm">목록</button>
         <button type="button" id="btnAdd" name="btnAdd" class="btn btn-primary btn-sm">신규</button>
@@ -21,7 +21,13 @@
         <div name="wrap" class="wrap">
             <h6>코드정보</h6>
             <form id="form" name="form">
-                <div id="codeData" name="codeData">
+                <div id="CommData" name="CommData">
+                    <div id="CommMsgData" name="CommMsgData" style="color: #736464" th:if="${msg != null}">
+                        <span name="Status" th:text="${msg.Status}"></span>
+                        <span name="Title" th:text="${msg.Title}"></span>
+                        <span name="Message" th:text="${msg.Message}"></span>
+                    </div>
+
                     <div>
                         <label class="col-sm-1" for="GroupNm">그룹</label>
                         <input class="col-sm-3" type="text" id="GroupNm" name="GroupNm"
@@ -125,6 +131,29 @@
             }
         }
 
+        let getCode = function (param1, param2) {
+            let url = '/admin/code/codeWrite/getCode';
+            //let paramData = CODEWRITE.container.find('form').serializeObject();
+            COM.callAjax(url, 'POST', 'html', {
+                    GroupNm:param1,
+                    Code:param2,
+                },
+                function (result, textStatus, data) {
+                    CODEWRITE.container.find('#CommData').replaceWith(result);
+                }, function (xhr, errorName, error) {
+                    CODEWRITE.container.find('#CommData').replaceWith("<div>Ajax Error</div>");
+                }, function () {
+                    let status = CODEWRITE.container.find('#CommMsgData [name=Status]').text();
+                    if (COM.intOnly(status) != 200) {
+                        let message = CODEWRITE.container.find('#CommMsgData [name=Message]').text();
+                        if (COM.isNullOrEmpty(message)) {
+                            message = "메시지 값이 비어있습니다."
+                        }
+                        alert(message);
+                    }
+                });
+        };
+
         let setCodeAction = function (eventNm) {
             let url;
             let paramData;
@@ -142,12 +171,20 @@
             }
             COM.callAjax(url, 'POST', 'html', paramData,
                 function (result, textStatus, data) {
-                    console.log('success');
-                    goList();
+                    CODEWRITE.container.find('#CommMsgData').replaceWith(result);
                 }, function (xhr, errorName, error) {
-                    console.log('error');
+                    CODEWRITE.container.find('#CommMsgData').replaceWith("<div>Ajax Error</div>");
                 }, function () {
-                    // complete
+                    let status = CODEWRITE.container.find('#CommMsgData [name=Status]').text();
+                    if (COM.intOnly(status) === 200) {
+                        goList();
+                    } else {
+                        let message = CODEWRITE.container.find('#CommMsgData [name=Message]').text();
+                        if (COM.isNullOrEmpty(message)) {
+                            message = "메시지 값이 비어있습니다."
+                        }
+                        alert(message);
+                    }
                 });
         };
 
@@ -174,19 +211,7 @@
                         alert('올바른 접근이 아닙니다. 리스트 페이지로 이동합니다.');
                         goList();
                     } else {
-                        let url = '/admin/code/codeWrite/getCode';
-                        let paramData = CODEWRITE.container.find('form').serializeObject();
-                        COM.callAjax(url, 'POST', 'html', {
-                                GroupNm:GroupNm,
-                                Code:Code,
-                            },
-                            function (result, textStatus, data) {
-                                CODEWRITE.container.find('#codeData').replaceWith(result);
-                            }, function (xhr, errorName, error) {
-                                CODEWRITE.container.find('#codeData').replaceWith("<div>Ajax Error</div>");
-                            }, function () {
-                                //
-                            });
+                        getCode(GroupNm,Code);
                     }
                 }
 

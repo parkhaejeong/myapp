@@ -70,7 +70,7 @@ public class CodeController {
         } else {
             model.addAttribute("msg", StaticMessage.message(0,"코드등록"));
         }
-        return StaticData.index(request) + ":: #CommData";
+        return StaticData.index(request) + ":: #CommMsgData";
     }
     // 코드 수정
     @RequestMapping(value = "/codeWrite/setCodeModify", method = RequestMethod.POST)

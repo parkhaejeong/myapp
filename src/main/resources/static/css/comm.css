@@ -52,25 +52,10 @@
     padding: 0px 10px;
 }
 
-.titleWarp {
-    display: flex;
-    align-items: center;
-}
-/*.titleName{*/
-/*    flex-grow: 1;*/
-/*}*/
-.titleName > h4{
-    display: inline-block;
-    vertical-align: middle;
-}
-.titleButton{
-    display: inline-block;
-    vertical-align: middle;
-}
-
 .titleButton > button{
     margin: 5px;
     display: flex;
+
 }
 
 /*취소선*/

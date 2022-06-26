@@ -9,45 +9,38 @@
 
 <div layout:fragment="custom-content" id="CODELIST" >
     <div th:insert="fragment/adminGnb :: adminGnbFragment"></div>
-
-    <div class="titleWarp">
-        <h4 id="pageTitle" name="pageTitle"
-            class="titleName">코드리스트</h4>
-
-        <div class="titleButton">
-            <button type="button"
-                    id="btnAdd" name="btnAdd"
-                    class="btn btn-primary btn-sm">신규</button>
-        </div>
+    <h4 id="pageTitle" name="pageTitle" >코드리스트</h4>
+    <div>
+        <button type="button" id="btnAdd" name="btnAdd" class="btn btn-primary btn-sm">신규</button>
     </div>
 
     <section>
         <div name="wrap" class="wrap">
             <h6>검색조건</h6>
-            <div>
-                <form>
-                    <div class="row">
-                        <label class="col-sm-1" for="Code">그룹</label>
-                        <input class="col-sm-3" type="text"
+            <form>
+                <div class="row mb-1">
+                    <div class="col-md-4">
+                        <label class="form-label" for="Code">그룹</label>
+                        <input class="form-control" type="text"
                                id="Code" name="Code" value=""
                                placeholder="입력">
                     </div>
-                    <div class="row">
-                        <label class="col-sm-1" for="CodeName">코드값</label>
-                        <input class="col-sm-3" type="text"
+                    <div class="col-md-4">
+                        <label class="form-label" for="CodeName">코드값</label>
+                        <input class="form-control" type="text"
                                id="CodeName" name="CodeName" value=""
                                placeholder="입력">
                     </div>
-                    <div class="row">
-                        <label class="col-sm-1" for="DelYn">삭제유무</label>
-                        <select class="col-sm-3" id="DelYn" name="DelYn">
+                    <div class="col-md-4">
+                        <label class="form-label " for="DelYn">삭제여부</label>
+                        <select class="form-select" id="DelYn" name="DelYn">
                             <option value="">전체</option>
                             <option value="1">삭제</option>
                             <option value="0">미삭제</option>
                         </select>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
             <div>
                 <button type="button"
                         id="btnSearch" name="btnSearch"
@@ -130,8 +123,14 @@
                 }, function (xhr, errorName, error) {
                     CODELIST.container.find('#CommData').replaceWith("<div>Ajax Error</div>");
                 }, function () {
-                    // complete
-                    // console.log(CODELIST.container.find('table tbody tr').data('groupnm'));
+                    let status = CODELIST.container.find('#CommMsgData [name=Status]').text();
+                    if (COM.intOnly(status) != 200) {
+                        let message = CODELIST.container.find('#CommMsgData [name=Message]').text();
+                        if (COM.isNullOrEmpty(message)) {
+                            message = "메시지 값이 비어있습니다."
+                        }
+                        alert(message);
+                    }
                 });
         };
 
@@ -146,7 +145,16 @@
                 }, function (xhr, errorName, error) {
                     CODELIST.container.find('#CommMsgData').replaceWith("<div>Ajax Error</div>");
                 }, function () {
-                    getCodeList();
+                    let status = CODELIST.container.find('#CommMsgData [name=Status]').text();
+                    if (COM.intOnly(status) === 200) {
+                        getCodeList();
+                    } else {
+                        let message = CODELIST.container.find('#CommMsgData [name=Message]').text();
+                        if (COM.isNullOrEmpty(message)) {
+                            message = "메시지 값이 비어있습니다."
+                        }
+                        alert(message);
+                    }
                 });
         };
 
